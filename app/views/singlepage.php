@@ -15,9 +15,44 @@
   </script>
 </head>
 <body>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<div class="navbar navbar-dark" style="width: 100%; background-color: #383838;">
+        <div class="container-fluid">
+          <div class="navbar-header">
+             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapibleMenu">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            <a href="/#/home" class="navbar-brand" style="color: white;">Jobeet 2</a>
+          </div>
+          <div class="collapse navbar-collapse" id="collapibleMenu">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/#/offer" style="color: white;">Offers</a></li>
+                <li><a href="/#/profil" style="color: white;">Profil</a></li>
+                <li><a onclick="logout()" style="color: white;">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <div id="flash" class="alert-box alert" ng-show="flash">
     {{ flash }}
   </div>
   <div id="view" ng-view></div>
 </body>
 </html>
+
+<script type="text/javascript">
+  function logout() {
+      var logout = $.get("/auth/logout");
+      sessionStorage.removeItem('authenticated');
+      window.location.href="/#/login";
+    }
+</script>

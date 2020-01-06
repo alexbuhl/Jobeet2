@@ -6,25 +6,22 @@ class AuthController extends BaseController {
     return Response::json(Auth::check());
   }
 
-  public function secrets() {
-    if(Auth::check()) {
-      return 'You are logged in, here are secrets.';
-    } else {
-      return 'You aint logged in, no secrets for you.';
-    }
-  }
-
   public function login()
   {
     $output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-      $output->writeln(Input::json('email'));
-      $output->writeln(Input::json('password'));
+    $output->writeln(Input::json('email'));
     if(Auth::attempt(array('email' => Input::json('email'), 'password' => Input::json('password'))))
     {
       return Response::json(Auth::user());
     } else {
       return Response::json(array('flash' => 'Invalid username or password'), 500);
     }
+  }
+
+  public function getConnected()
+  {
+    $user = DB::table('users')->where('email', Input::get('email'))->first();
+    return Response::json(json_encode($user));
   }
 
   public function logout()

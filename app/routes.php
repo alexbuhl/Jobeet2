@@ -28,4 +28,4 @@ Route::get('/books', array('before' => 'auth', function() {
 Route::post('/auth/login', array('before' => 'csrf_json', 'uses' => 'AuthController@login'));
 Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/status', 'AuthController@status');
-Route::get('/auth/secrets','AuthController@secrets');
+Route::post('/user/connected','AuthController@getConnected');

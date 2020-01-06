@@ -143,9 +143,27 @@ app.factory("AuthenticationService", function($http, $sanitize, SessionService, 
 
 app.controller("LoginController", function($scope, $location, AuthenticationService) {
   $scope.credentials = { email: "", password: "" };
+    
+    var jsonCredentials = function(credentials) {
+    return {
+      email: credentials.email,
+      password: credentials.password,
+    };
+  };
 
   $scope.login = function() {
     AuthenticationService.login($scope.credentials).success(function() {
+      $.post("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
+        $user = JSON.parse(res);
+        sessionStorage.setItem('username', $user.username);
+        sessionStorage.setItem('email', $user.email);
+        sessionStorage.setItem('description', $user.description);
+        sessionStorage.setItem('role', $user.role);
+        sessionStorage.setItem('hobbie', $user.hobbie);
+        sessionStorage.setItem('company', $user.company);
+        sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+        sessionStorage.setItem('image', $user.image);
+      });
       $location.path('/home');
     });
   };
@@ -167,6 +185,12 @@ app.controller("HomeController", function($scope, $location, AuthenticationServi
 });
 
 app.controller("ProfilController", function($scope) {
+    $scope.username = sessionStorage.getItem('username');
+    $scope.email = sessionStorage.getItem('email');
+    $scope.description = sessionStorage.getItem('description');
+    $scope.hobbie = sessionStorage.getItem('hobbie');
+    $scope.company = sessionStorage.getItem('company');
+    $scope.image = sessionStorage.getItem('image');
 });
 
 app.directive("showsMessageWhenHovered", function() {

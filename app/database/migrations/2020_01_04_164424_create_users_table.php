@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration {
 			$t->text('hobbie');
 			$t->text('company');
 			$t->integer('idEntreprise');
+			$t->text('image');
 		});
 	}
 
