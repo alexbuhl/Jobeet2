@@ -42,6 +42,11 @@ app.config(function($routeProvider) {
     controller: 'ProfilController'
   });
 
+  $routeProvider.when('/enterprise', {
+    templateUrl: 'templates/enterprise.html',
+    controller: 'EnterpriseController',
+  });
+
   $routeProvider.when('/books', {
     templateUrl: 'templates/books.html',
     controller: 'BooksController',
@@ -74,6 +79,7 @@ app.factory("BookService", function($http) {
     }
   };
 });
+
 
 app.factory("FlashService", function($rootScope) {
   return {
@@ -155,6 +161,7 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
     AuthenticationService.login($scope.credentials).success(function() {
       $.post("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
         $user = JSON.parse(res);
+        //console.log($user.idEntreprise);
         sessionStorage.setItem('username', $user.username);
         sessionStorage.setItem('email', $user.email);
         sessionStorage.setItem('description', $user.description);
@@ -163,6 +170,12 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('company', $user.company);
         sessionStorage.setItem('idEntreprise', $user.idEntreprise);
         sessionStorage.setItem('image', $user.image);
+      });
+      console.log(sessionStorage.getItem('idEntreprise'));
+      $.post("/enterprise", {id: sessionStorage.getItem('idEntreprise')}).done(function(res){
+        enterprise = JSON.parse(res);
+        sessionStorage.setItem('descriptionEnterprise', enterprise.description);
+        sessionStorage.setItem('nameEnterprise', enterprise.name);
       });
       $location.path('/home');
     });
@@ -208,4 +221,15 @@ app.directive("showsMessageWhenHovered", function() {
       });
     }
   };
+});
+
+
+app.controller("EnterpriseController", function($scope) {
+  $scope.enterpriseName = sessionStorage.getItem("nameEnterprise");
+  $scope.enterpriseDescription = sessionStorage.getItem("descriptionEnterprise");
+
+
+  $.post("/enterprise/myOffers", {email: sessionStorage.getItem('email')}).done(function(res){
+    $scope.myOffers = JSON.parse(res);
+  })
 });

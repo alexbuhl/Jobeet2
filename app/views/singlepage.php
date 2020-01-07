@@ -33,6 +33,7 @@
                 <li><a href="/#/offer" style="color: white;">Offers</a></li>
                 <li><a href="/#/profil" style="color: white;">Profil</a></li>
                 <li><a onclick="logout()" style="color: white;">Logout</a></li>
+                <li><a href='/#/enterprise' style="color: white;">Enterprise</a></li>
             </ul>
           </div>
         </div>

@@ -8,8 +8,6 @@ class AuthController extends BaseController {
 
   public function login()
   {
-    $output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-    $output->writeln(Input::json('email'));
     if(Auth::attempt(array('email' => Input::json('email'), 'password' => Input::json('password'))))
     {
       return Response::json(Auth::user());

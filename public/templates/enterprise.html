@@ -1,0 +1,32 @@
+<h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>{{enterpriseName}}</u></b></h1>
+<div>
+  <h3 style="display: inline-block;"><b>Description:</b></h3>
+  <h5 style="display: inline-block;">{{enterpriseDescription}}</h5>
+</div>
+
+<p><h3>My offers</h3><p>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th scope="col">Offer</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<li **ngFor="let offer of myOffers">
+      <tr>
+        <td style="text-align: center;">{{offer.name}}</td>
+      </tr>
+    </li>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+

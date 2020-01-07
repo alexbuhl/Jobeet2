@@ -29,3 +29,8 @@ Route::post('/auth/login', array('before' => 'csrf_json', 'uses' => 'AuthControl
 Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/status', 'AuthController@status');
 Route::post('/user/connected','AuthController@getConnected');
+
+
+Route::post('/enterprise', 'EnterpriseController@index');
+Route::post('/enterprise/myOffers', 'EnterpriseController@myOffers');
+Route::post('/enterprise/otherOffers', 'EnterpriseController@otherOffers');
