@@ -33,6 +33,5 @@ Route::post('/profil/edit', 'ProfilController@edit');
 Route::get('/skills','SkillController@getSkills');
 
 
-Route::post('/enterprise', 'EnterpriseController@index');
-Route::post('/enterprise/myOffers', 'EnterpriseController@myOffers');
-Route::post('/enterprise/otherOffers', 'EnterpriseController@otherOffers');
+Route::get('/enterprise/get', 'EnterpriseController@get');
+

@@ -47,7 +47,7 @@ app.config(function($routeProvider) {
     }
   });
 
-  $routeProvider.when('/enterprise', {
+  $routeProvider.when('/enterprise/', {
     templateUrl: 'templates/enterprise.html',
     controller: 'EnterpriseController',
   });
@@ -180,11 +180,14 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('onhard', $user.onhard);
 
       });
-      $.post("/enterprise", {id: sessionStorage.getItem('idEntreprise')}).done(function(res){
+
+
+/*
+      $.post("/enterprise/get", {id: $user.idEntreprise}).done(function(res){
         enterprise = JSON.parse(res);
         sessionStorage.setItem('descriptionEnterprise', enterprise.description);
         sessionStorage.setItem('nameEnterprise', enterprise.name);
-      });
+      });*/
       $location.path('/home');
     });
   };
@@ -336,11 +339,20 @@ app.directive("showsMessageWhenHovered", function() {
 
 
 app.controller("EnterpriseController", function($scope) {
-  $scope.enterpriseName = sessionStorage.getItem("nameEnterprise");
-  $scope.enterpriseDescription = sessionStorage.getItem("descriptionEnterprise");
+  
+  //$test = $.get("/enterprise/get", {id: sessionStorage.getItem("idEntreprise")}).success(function(res){
+    $.get("/enterprise/get", {id: sessionStorage.getItem("idEntreprise")}).toPromise().then(res =>{
+      $enterprise = JSON.parse(res);
+      $enterpriseName = $enterprise.name;
+      $enterpriseDescription = $enterprise.description;
+  });
+  
+
+  //$scope.enterpriseName = sessionStorage.getItem("nameEnterprise");
+  //$scope.enterpriseDescription = sessionStorage.getItem("descriptionEnterprise");
 
 
-  $.post("/enterprise/myOffers", {email: sessionStorage.getItem('email')}).done(function(res){
+  /*$.post("/enterprise/myOffers", {email: sessionStorage.getItem('email')}).done(function(res){
     $scope.myOffers = JSON.parse(res);
-  })
+  })*/
 });
