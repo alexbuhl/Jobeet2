@@ -4,6 +4,7 @@
   <h5 style="display: inline-block;">{{enterpriseDescription}}</h5>
 </div>
 
+
 <p><h3>My offers</h3><p>
 <table class="table">
   <thead>
@@ -13,14 +14,42 @@
     </tr>
   </thead>
   <tbody>
-  	<li **ngFor="let offer of myOffers">
-      <tr>
-        <td style="text-align: center;">{{offer.name}}</td>
-      </tr>
-    </li>
+    <div class ="list" ng-repeat="offer in recruiterOffers">
+      {{ offer.name }}
+      <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/enterprise/<%= offer.id %>">Manage the offer</a></button></td>
+    </div>
   </tbody>
 </table>
 
+
+<p><h3>Enterprise's offers</h3><p>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th scope="col">Offer</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <div class ="list" ng-repeat="offer in otherOffers">
+      {{ offer.name }}
+      <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/enterprise/<%= offer.id %>">Manage the offer</a></button></td>
+  </tbody>
+</table>
+<div class="striped-border"></div>
+  <div style="text-align: center;">
+    <div style=" display: inline-block; margin-right: 15px;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/enterprise/newOffer">Create a new offer</a></button></div>
+    <div style=" display: inline-block;"><button type="button" class="btn btn-primary"><a style="color: #FFFFFF;" href="/enterprise/prepareUpdateEnterprise">Update enterprise</a></button></div>
+  </div>
+<style>
+  .striped-border {
+      border: 1px dashed #000;
+      width: 50%;
+      margin: auto;
+      margin-top: 30px;
+      margin-bottom: 30px;
+  }
+</style>
 
 
 

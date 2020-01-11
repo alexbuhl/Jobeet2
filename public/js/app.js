@@ -56,6 +56,9 @@ app.config(function($routeProvider) {
       },
       recruiterOffers : function(EnterpriseService){
         return EnterpriseService.recruiterOffers();
+      },
+      otherOffers : function(EnterpriseService){
+        return EnterpriseService.otherOffers();
       }
     }
   });
@@ -346,28 +349,21 @@ app.factory("EnterpriseService", function($http) {
       return $.get("/enterprise", {id: sessionStorage.getItem("idEntreprise")});
     },
     recruiterOffers : function(){
-
+      return $.get("/enterprise/recruiterOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("idEntreprise")});
+    },
+    otherOffers : function(){
+      return $.get("enterprise/otherOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("idEntreprise")});
     }
   };
 });
 
 
-app.controller("EnterpriseController", function($scope, enterprise){
+app.controller("EnterpriseController", function($scope, enterprise, recruiterOffers, otherOffers){
   
-  //$test = $.get("/enterprise/get", {id: sessionStorage.getItem("idEntreprise")}).success(function(res){
-   /* $.get("/enterprise/get", {id: sessionStorage.getItem("idEntreprise")}).toPromise().then(res =>{
-      $enterprise = JSON.parse(res);
-      $enterpriseName = $enterprise.name;
-      $enterpriseDescription = $enterprise.description;
-  });
-  */
+  $scope.recruiterOffers = JSON.parse(recruiterOffers);
+  $scope.otherOffers = JSON.parse(otherOffers);
+
   $enterprise = JSON.parse(enterprise);
-  console.log(enterprise);
   $scope.enterpriseName = $enterprise.name;
   $scope.enterpriseDescription = $enterprise.description;
-
-
-  /*$.post("/enterprise/myOffers", {email: sessionStorage.getItem('email')}).done(function(res){
-    $scope.myOffers = JSON.parse(res);
-  })*/
 });
