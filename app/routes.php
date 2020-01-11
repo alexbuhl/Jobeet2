@@ -33,5 +33,5 @@ Route::post('/profil/edit', 'ProfilController@edit');
 Route::get('/skills','SkillController@getSkills');
 
 
-Route::get('/enterprise/get', 'EnterpriseController@get');
+Route::get('/enterprise/', 'EnterpriseController@index');
 

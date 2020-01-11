@@ -2,7 +2,7 @@
 
 class EnterpriseController extends BaseController {
 
-  public function get()
+  public function index()
   {
     $enterprise = DB::table('enterprise')->where('id', Input::get('id'))->first();
     return Response::json(json_encode($enterprise));
