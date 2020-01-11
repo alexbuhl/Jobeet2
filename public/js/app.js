@@ -39,7 +39,12 @@ app.config(function($routeProvider) {
 
   $routeProvider.when('/profil', {
     templateUrl: 'templates/profil.html',
-    controller: 'ProfilController'
+    controller: 'ProfilController',
+    resolve: {
+      skill : function(ProfilService) {
+        return ProfilService.get();
+      }
+    }
   });
 
   $routeProvider.when('/enterprise', {
@@ -159,9 +164,8 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
 
   $scope.login = function() {
     AuthenticationService.login($scope.credentials).success(function() {
-      $.post("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
+      $.get("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
         $user = JSON.parse(res);
-        //console.log($user.idEntreprise);
         sessionStorage.setItem('username', $user.username);
         sessionStorage.setItem('email', $user.email);
         sessionStorage.setItem('description', $user.description);
@@ -170,8 +174,12 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('company', $user.company);
         sessionStorage.setItem('idEntreprise', $user.idEntreprise);
         sessionStorage.setItem('image', $user.image);
+        sessionStorage.setItem('isPremium', $user.isPremium);
+        sessionStorage.setItem('off', $user.off);
+        sessionStorage.setItem('onsoft', $user.onsoft);
+        sessionStorage.setItem('onhard', $user.onhard);
+
       });
-      console.log(sessionStorage.getItem('idEntreprise'));
       $.post("/enterprise", {id: sessionStorage.getItem('idEntreprise')}).done(function(res){
         enterprise = JSON.parse(res);
         sessionStorage.setItem('descriptionEnterprise', enterprise.description);
@@ -187,8 +195,6 @@ app.controller("BooksController", function($scope, books) {
 });
 
 app.controller("HomeController", function($scope, $location, AuthenticationService) {
-  $scope.title = "Awesome Home";
-  $scope.message = "Mouse Over these images to see a directive at work!";
 
   $scope.logout = function() {
     AuthenticationService.logout().success(function() {
@@ -197,14 +203,119 @@ app.controller("HomeController", function($scope, $location, AuthenticationServi
   };
 });
 
-app.controller("ProfilController", function($scope) {
+app.factory("ProfilService", function($http) {
+  return {
+    get: function() {
+      $tab = [];
+      $.get("/skills").done(function(res){
+        $skills = JSON.parse(res);
+        for(elt in $skills){
+          $tab.push($skills[elt].name);
+       }
+     });
+     return $tab;
+    }
+  };
+});
+
+app.controller("ProfilController", function($scope, skill) {
+    $(document).ready(function () {  
+         $('select').selectpicker(); 
+     });
+    $scope.skills = skill;
     $scope.username = sessionStorage.getItem('username');
     $scope.email = sessionStorage.getItem('email');
     $scope.description = sessionStorage.getItem('description');
     $scope.hobbie = sessionStorage.getItem('hobbie');
     $scope.company = sessionStorage.getItem('company');
     $scope.image = sessionStorage.getItem('image');
+    $scope.isPremium = sessionStorage.getItem('isPremium');
+    $scope.off = sessionStorage.getItem('off');
+    $scope.onsoft = sessionStorage.getItem('onsoft');
+    $scope.onhard = sessionStorage.getItem('onhard');
+    $scope.profil = function() {
+      console.log("called");
+      document.getElementById("edit").style.display = "none";    
+      document.getElementById("profil").style.display = "block";
+      document.getElementById("tab2").classList.remove('active');
+      document.getElementById("tab1").classList.add('active');
+    };
+    $scope.edit = function() {
+      document.getElementById("edit").style.display = "block";    
+      document.getElementById("profil").style.display = "none";
+      document.getElementById("tab1").classList.remove('active');
+      document.getElementById("tab2").classList.add('active');
+      $('select').selectpicker();    
+    };
+
+    $scope.send = function() {
+      console.log(document.getElementById("off").checked);
+      console.log(document.getElementById("on-soft").checked);
+      console.log(document.getElementById("on-hard").checked);
+      var $self = $(this);
+      var brands = document.getElementById("skillSelected");
+      var selected = [];
+      $(brands).each(function(index, brand){
+        selected.push($(this).val());
+      });
+      var tab = document.getElementById("removeSkillSelected");
+      var removeSelected = [];
+      $(tab).each(function(index, tmp){
+        removeSelected.push($(this).val());
+      });
+      var myFile = $('#myFile').prop('files');
+      var reader = new FileReader();
+      reader.readAsDataURL(myFile[0]);
+      reader.onload = function () {
+        $.post("/profil/edit", {
+          img : reader.result, 
+          email: sessionStorage.getItem('email'), 
+          username: document.getElementById("name").value,
+          description: document.getElementById("description").value,
+          company: document.getElementById("company").value,
+          hobbie: document.getElementById("hobbies").value,
+          skillSelected: selected,
+          removeSkillSelected: removeSelected,
+          isPremium: document.getElementById("isPremium").checked,
+          off: document.getElementById("off").checked,
+          onsoft: document.getElementById("on-soft").checked,
+          onhard: document.getElementById("on-hard").checked
+        });
+        $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
+          $user = JSON.parse(res);
+          sessionStorage.setItem('username', $user.username);
+          sessionStorage.setItem('email', $user.email);
+          sessionStorage.setItem('description', $user.description);
+          sessionStorage.setItem('role', $user.role);
+          sessionStorage.setItem('hobbie', $user.hobbie);
+          sessionStorage.setItem('company', $user.company);
+          sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+          sessionStorage.setItem('image', $user.image);
+          sessionStorage.setItem('isPremium', $user.isPremium);
+          sessionStorage.setItem('off', $user.off);
+          sessionStorage.setItem('onsoft', $user.onsoft);
+          sessionStorage.setItem('onhard', $user.onhard);
+          $scope.username = sessionStorage.getItem('username');
+          $scope.email = sessionStorage.getItem('email');
+          $scope.description = sessionStorage.getItem('description');
+          $scope.hobbie = sessionStorage.getItem('hobbie');
+          $scope.company = sessionStorage.getItem('company');
+          $scope.image = sessionStorage.getItem('image');
+          $scope.isPremium = sessionStorage.getItem('isPremium');
+          $scope.off = sessionStorage.getItem('off');
+          $scope.onsoft = sessionStorage.getItem('onsoft');
+          $scope.onhard = sessionStorage.getItem('onhard');
+          document.getElementById("edit").style.display = "none";    
+          document.getElementById("profil").style.display = "block";
+          document.getElementById("tab2").classList.remove('active');
+          document.getElementById("tab1").classList.add('active');
+          document.location.reload(true);
+        });
+      };
+    };
+
 });
+
 
 app.directive("showsMessageWhenHovered", function() {
   return {

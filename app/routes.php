@@ -28,7 +28,9 @@ Route::get('/books', array('before' => 'auth', function() {
 Route::post('/auth/login', array('before' => 'csrf_json', 'uses' => 'AuthController@login'));
 Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/status', 'AuthController@status');
-Route::post('/user/connected','AuthController@getConnected');
+Route::get('/user/connected','AuthController@getConnected');
+Route::post('/profil/edit', 'ProfilController@edit');
+Route::get('/skills','SkillController@getSkills');
 
 
 Route::post('/enterprise', 'EnterpriseController@index');

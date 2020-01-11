@@ -24,6 +24,10 @@ class CreateUsersTable extends Migration {
 			$t->text('company');
 			$t->integer('idEntreprise');
 			$t->text('image');
+			$t->boolean('isPremium');
+			$t->boolean('off');
+			$t->boolean('onsoft');
+			$t->boolean('onhard');
 		});
 	}
 

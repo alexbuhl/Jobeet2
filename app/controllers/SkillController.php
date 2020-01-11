@@ -1,17 +1,17 @@
 <?php
 
-class ProfilController extends \BaseController {
+class SkillController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
 	 */
-	public function edit()
+	public function getSkills()
 	{
-		//$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-    	//$output->writeln(Input::get('email'));
-		DB::table('users')->where('email', Input::get('email'))->update(['username' => Input::get('username'), 'image' => Input::get('img'), 'description' => Input::get('description'), 'hobbie' => Input::get('hobbie'), 'company' => Input::get('company'), 'isPremium' => Input::get('isPremium') === 'true', 'off' => Input::get('off') === 'true', 'onsoft' => Input::get('onsoft') === 'true', 'onhard' => Input::get('onhard') === 'true']);
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
+    	$skills = DB::table('skills')->select('name')->get();
+    	return Response::json(json_encode($skills));
 	}
 
 

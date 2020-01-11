@@ -11,12 +11,28 @@
   <link rel="stylesheet" href="../css/magnific-popup.css"/>
   <link rel="stylesheet" href="../css/style.css"/>
 
-  <section class="hero-section spad">
+  <script type="text/javascript">
+    $.get("/skills").done(function(res){
+        $skills = JSON.parse(res);
+        for(let elt in $skills){
+          console.log(elt);
+       }
+  </script>
+
+  <ul class="nav nav-tabs">
+    <li class="active" id="tab1"><a ng-click="profil()">Profil</a></li>
+    <li id="tab2"><a ng-click="edit()">Edit</a></li>
+  </ul>
+
+  <section class="hero-section spad" id="profil">
     <div class="container-fluid" style="text-align: center; margin-top: -100px; margin-left: 30px;">
       <div class="row" style="max-width: 100%;">
           <div class="row" style="max-width: 100%;">
             <div class="col-md-6">
               <div class="hero-text" style="text-align: left;">
+                 <p ng-repeat="(key, value) in skills">
+                    {{value}}
+                  </p>
                 <h2>{{username}}</h2>
                 <p>{{description}}</p>
               </div>
@@ -26,6 +42,11 @@
                   <li><span>Hobbie</span>{{hobbie}}</li>
                   <li><span>Company</span>{{company}}</li>
                   <li><span>E-mail</span>{{email}}</li>
+                  <li ng-if="off"><span>Situation</span>Off</li>
+                  <li ng-if="onsoft"><span>Situation</span>On Soft</li>
+                  <li ng-if="onhard"><span>Situation</span>On Hard</li>
+                  <li ng-if="isPremium"><span>Premium User</span>Full access</li>                  
+                  <li ng-if="isPremium == false"><span>Premium User</span>Not Yet !</li>                  
                 </ul>
               </div>
             </div>
@@ -47,4 +68,128 @@
       </div>
     </div>
   </section>
+
+    <section class="hero-section spad" id="edit" style="display: none; font-size: 20px; margin-left: 30px;">
+    <div class="container-fluid" style="text-align: center; margin-top: -100px; margin-left: 30px;">
+      <div class="row" style="max-width: 100%;">
+          <div class="row" style="max-width: 100%;">
+            <div>
+              <div class="hero-info" style="text-align: left;">
+                <h2 style="text-align: center">Edit Profil</h2>
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Username</label>
+                <div class="col-lg-9">
+                  <input id="name" class="form-control" type="text" value="{{username}}">
+                </div>
+              </div>
+                <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Company</label>
+                <div class="col-lg-9">
+                  <input id="company" class="form-control" type="text" value="{{company}}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Hobbies</label>
+                <div class="col-lg-9">
+                  <input id="hobbies" class="form-control" type="text" value="{{hobbie}}">
+                </div>
+              </div>
+              <div class="form-group row" style="margin-bottom: 20px;">
+                <label class="col-lg-3 col-form-label form-control-label">Update picture</label>
+                <div class="col-lg-9">
+                  <input type="file" id="myFile">
+                </div>
+              </div>               
+              <div class="form-group row" style="margin-bottom: 20px;">
+                <label class="col-lg-3 col-form-label form-control-label">Selected skills</label>
+                <div style="margin-left: 465px;">
+                  <select id="skillSelected" class="selectpicker" multiple data-live-search="true">
+                    <option ng-repeat="(key, value) in skills">
+                      {{value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row" style="margin-bottom: 20px;">
+                <label class="col-lg-3 col-form-label form-control-label">Skills to remove</label>
+                <div style="margin-left: 465px;">
+                  <select class="selectpicker" multiple data-live-search="true">
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Relish</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row" style="margin-bottom: 20px;">
+                <label class="col-lg-3 col-form-label form-control-label">Resume</label>
+                <div class="col-lg-9">
+                  <textarea rows="8" cols="80" id="description" class="form-control" type="text">{{description}}</textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Situation</label>
+                <div class="col-lg-9">
+                  <div class="form-check">
+                    <div ng-if="off" style="display: flex; text-align: center;">
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="off" value="option1" checked>
+                        <p><label class="form-check-label" for="exampleRadios1">OFF</label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-soft" value="option2">
+                        <p><label class="form-check-label" for="exampleRadios2"> ON-SOFT </label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-hard" value="option3">
+                        <p><label class="form-check-label" for="exampleRadios3"> ON-HARD </label><p>
+                      </div>
+                    </div>
+                    <div ng-if="onsoft" style="display: flex; text-align: center;">
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="off" value="option1">
+                        <p><label class="form-check-label" for="exampleRadios1">OFF</label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-soft" value="option2" checked>
+                        <p><label class="form-check-label" for="exampleRadios2"> ON-SOFT </label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-hard" value="option3">
+                        <p><label class="form-check-label" for="exampleRadios3"> ON-HARD </label><p>
+                      </div>
+                    </div>
+                    <div ng-if="onhard" style="display: flex; text-align: center;">
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="off" value="option1">
+                        <p><label class="form-check-label" for="exampleRadios1">OFF</label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-soft" value="option2">
+                        <p><label class="form-check-label" for="exampleRadios2"> ON-SOFT </label></p>
+                      </div>
+                      <div style="margin: 10px 10px 10px 10px">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="on-hard" value="option3" checked>
+                        <p><label class="form-check-label" for="exampleRadios3"> ON-HARD </label><p>
+                      </div>
+                    </div>                
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label form-control-label">Premium</label>
+                <div class="col-lg-9">
+                  <input ng-if="isPremium" class="form-check-input" type="checkbox" id="isPremium" checked>
+                  <input ng-if="isPremium == false" class="form-check-input" type="checkbox" id="isPremium" >
+                </div>
+              </div>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-success" ng-click="send()">Save changes</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   
