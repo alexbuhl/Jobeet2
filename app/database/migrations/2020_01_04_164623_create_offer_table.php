@@ -18,7 +18,7 @@ class CreateOfferTable extends Migration {
 			$t->text('name');
 			$t->text('description');
 			$t->integer('idRecruiter');
-			$t->integer('idEntreprise');
+			$t->integer('identerprise');
 		});
 	}
 

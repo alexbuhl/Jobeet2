@@ -183,7 +183,7 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('role', $user.role);
         sessionStorage.setItem('hobbie', $user.hobbie);
         sessionStorage.setItem('company', $user.company);
-        sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+        sessionStorage.setItem('identerprise', $user.identerprise);
         sessionStorage.setItem('image', $user.image);
         sessionStorage.setItem('isPremium', $user.isPremium);
         sessionStorage.setItem('off', $user.off);
@@ -298,7 +298,7 @@ app.controller("ProfilController", function($scope, skill) {
           sessionStorage.setItem('role', $user.role);
           sessionStorage.setItem('hobbie', $user.hobbie);
           sessionStorage.setItem('company', $user.company);
-          sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+          sessionStorage.setItem('identerprise', $user.identerprise);
           sessionStorage.setItem('image', $user.image);
           sessionStorage.setItem('isPremium', $user.isPremium);
           sessionStorage.setItem('off', $user.off);
@@ -346,13 +346,13 @@ app.directive("showsMessageWhenHovered", function() {
 app.factory("EnterpriseService", function($http) {
   return {
     get: function() {
-      return $.get("/enterprise", {id: sessionStorage.getItem("idEntreprise")});
+      return $.get("/enterprise", {id: sessionStorage.getItem("identerprise")});
     },
     recruiterOffers : function(){
-      return $.get("/enterprise/recruiterOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("idEntreprise")});
+      return $.get("/enterprise/recruiterOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("identerprise")});
     },
     otherOffers : function(){
-      return $.get("enterprise/otherOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("idEntreprise")});
+      return $.get("enterprise/otherOffers", {email: sessionStorage.getItem("email"), idEnterprise: sessionStorage.getItem("identerprise")});
     }
   };
 });

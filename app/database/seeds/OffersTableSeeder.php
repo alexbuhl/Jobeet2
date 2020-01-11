@@ -9,13 +9,13 @@ class OffersTableSeeder extends Seeder {
                 'name'          => 'offer1',
                 'description'   => 'best offer ever',
                 'idRecruiter'   => 1,
-                'idEntreprise'  => 1,
+                'identerprise'  => 1,
             ),
             array(
                 'name'          => 'offer2',
                 'description'   => 'cool offer',
                 'idRecruiter'   => 2,
-                'idEntreprise'  => 1,
+                'identerprise'  => 1,
             )
     	);
     	DB::table('offer')->insert($offers);

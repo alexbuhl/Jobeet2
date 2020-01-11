@@ -15,7 +15,7 @@ class EnterpriseController extends BaseController {
   public function recruiterOffers()
   {    
     $id = DB::table('users')->where('email', Input::get('email'))->first()->id;
-    $myOffers = DB::table('offer')->where('idRecruiter', $id )->where('idEntreprise', Input::get('idEnterprise'))->get();
+    $myOffers = DB::table('offer')->where('idRecruiter', $id )->where('identerprise', Input::get('idEnterprise'))->get();
     
     return Response::json(json_encode($myOffers));
   }
@@ -23,7 +23,7 @@ class EnterpriseController extends BaseController {
   public function otherOffers()
   {
     $id = DB::table('users')->where('email', Input::get('email'))->first()->id;
-    $otherOffers = DB::table('offer')->where('idRecruiter', '<>' , $id )->where('idEntreprise', Input::get('idEnterprise'))->get();
+    $otherOffers = DB::table('offer')->where('idRecruiter', '<>' , $id )->where('identerprise', Input::get('idEnterprise'))->get();
     
     return Response::json(json_encode($otherOffers));
   }

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration {
 			$t->text('description');
 			$t->text('hobbie');
 			$t->text('company');
-			$t->integer('idEntreprise');
+			$t->integer('identerprise');
 			$t->text('image');
 			$t->boolean('isPremium');
 			$t->boolean('off');
