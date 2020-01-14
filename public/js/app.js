@@ -43,6 +43,9 @@ app.config(function($routeProvider) {
     resolve: {
       skill : function(ProfilService) {
         return ProfilService.get();
+      },
+      allUserSkill : function(ProfilService) {
+        return ProfilService.getAll();
       }
     }
   });
@@ -196,6 +199,7 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
     AuthenticationService.login($scope.credentials).success(function() {
       $.get("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
         $user = JSON.parse(res);
+        sessionStorage.setItem('id', $user.id);
         sessionStorage.setItem('username', $user.username);
         sessionStorage.setItem('email', $user.email);
         sessionStorage.setItem('description', $user.description);
@@ -231,27 +235,44 @@ app.controller("HomeController", function($scope, $location, AuthenticationServi
 app.factory("ProfilService", function($http) {
   return {
     get: function() {
-      $tab = [];
+      tab = [];
       $.get("/skills").done(function(res){
-        $skills = JSON.parse(res);
-        for(elt in $skills){
-          $tab.push($skills[elt].name);
+        skills = JSON.parse(res);
+        for(elt in skills){
+          tab.push(skills[elt]);
        }
      });
-     return $tab;
+     return tab;
+    },
+    getAll: function() {
+      tb = [];
+      $.get("/userSkills").done(function(res){
+        tmp = JSON.parse(res);
+        for(elt in tmp){
+          tb.push(tmp[elt]);
+       }
+     });
+     return tb;
     }
   };
 });
 
-app.controller("ProfilController", function($scope, skill) {
+app.controller("ProfilController", function($scope, skill, allUserSkill) {
     var toAdd = [];
-    $.get("/user/skills/1").done(function(res){
-          $ymp= JSON.parse(res);
-          $ymp.forEach((element, index) => {
-            toAdd.push(element);
-          });
-         }
-       );
+    for(elt in allUserSkill){
+      if(allUserSkill[elt].idUser == sessionStorage.getItem('id')){
+        for(val in skill){
+          if(skill[val].id == allUserSkill[elt].idSkill){
+            toAdd.push(skill[val].name);
+          }
+        }
+      }
+    }
+    skilltab = [];
+    for(elt in skill){
+      skilltab.push(skill[elt].name);
+    }
+    $scope.toAdd = toAdd;
     $scope.username = sessionStorage.getItem('username');
     $scope.email = sessionStorage.getItem('email');
     $scope.description = sessionStorage.getItem('description');
@@ -271,7 +292,7 @@ app.controller("ProfilController", function($scope, skill) {
       document.getElementById("tab1").classList.add('active');
     };
     $scope.edit = function() {
-      skill.forEach((element, index) => {
+      skilltab.forEach((element, index) => {
       if(jQuery.inArray(element, toAdd) == -1){
           let option_elem = document.createElement('option');
           option_elem.value = index + 1;
@@ -376,6 +397,7 @@ app.controller("ProfilController", function($scope, skill) {
         $scope.off = sessionStorage.getItem('off');
         $scope.onsoft = sessionStorage.getItem('onsoft');
         $scope.onhard = sessionStorage.getItem('onhard');
+        document.location.reload(true);
         document.getElementById("edit").style.display = "none";    
         document.getElementById("profil").style.display = "block";
         document.getElementById("tab2").classList.remove('active');

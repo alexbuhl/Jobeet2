@@ -14,7 +14,7 @@ class SkillController extends \BaseController {
 		{
 		    $message->to('julien.gantzer@epita.fr', '')->subject('Jobeet c\'est de l\'eau !');
 		});*/
-    	$skills = DB::table('skills')->select('name')->get();
+    	$skills = DB::table('skills')->get();
     	return Response::json(json_encode($skills));
 	}
 
@@ -24,15 +24,9 @@ class SkillController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function getSkillsByUser($id)
+	public function getAllUserSkills()
 	{
-		$skillsId = DB::table('userSkills')->where('idUser', $id)->get();
-		$res = array();
-		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-		foreach ($skillsId as $elt) {
-			$output->writeln($elt->idSkill);
-			$res[] = DB::table('skills')->select('name')->where('id', $elt->idSkill)->first()->name;
-		}
+		$res = DB::table('userSkills')->get();
 		return Response::json(json_encode($res));
 	}
 
