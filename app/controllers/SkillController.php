@@ -9,6 +9,11 @@ class SkillController extends \BaseController {
 	 */
 	public function getSkills()
 	{
+
+		/*Mail::send('emails.acceptUser', array(), function($message)
+		{
+		    $message->to('julien.gantzer@epita.fr', '')->subject('Jobeet c\'est de l\'eau !');
+		});*/
     	$skills = DB::table('skills')->select('name')->get();
     	return Response::json(json_encode($skills));
 	}
