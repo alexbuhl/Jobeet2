@@ -9,10 +9,11 @@
     </tr>
   </thead>
   <tbody>
-    <div class ="list" ng-repeat="offer in offers">
-       {{offer.name}}
-        Be premium for that !
-        <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/offers/{{offer.id}}">See the offer</a></button>
-    </div>
+    <tr style="text-align: center;" ng-repeat="offer in offers">
+        <td>enterprise number</td>
+        <td>{{offer.name}}</td>
+        <td>Percentage</td>
+        <td><a style="color: #FFFFFF;" href="/#/offers/{{offer.id}}"><button type="button" class="btn btn-success">See the offer</button></a></td>
+    </tr>
   </tbody>
 </table>
