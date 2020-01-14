@@ -1,0 +1,18 @@
+<h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>Offers</u></b></h1>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th scope="col">Enterprise</th>
+      <th scope="col">Offer</th>
+      <th scope="col">Percentage of match</th>
+      <th scope="col">Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <div class ="list" ng-repeat="offer in offers">
+       {{offer.name}}
+        Be premium for that !
+        <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/offers/{{offer.id}}">See the offer</a></button>
+    </div>
+  </tbody>
+</table>

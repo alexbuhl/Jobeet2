@@ -47,6 +47,31 @@ app.config(function($routeProvider) {
     }
   });
 
+  $routeProvider.when('/offers', {
+    templateUrl: 'templates/offers.html',
+    controller: 'OffersController',
+    resolve: {
+      offers : function(OffersService){
+        return OffersService.offers();
+      }
+    }
+  });
+
+  $routeProvider.when('/offers/:id', {
+    templateUrl: 'templates/offersShow.html',
+    controller: 'OfferShowController',
+    resolve : {
+      offers : function(OfferShowService){
+        return OfferShowService.offers();
+      }
+    }
+  });
+
+  $routeProvider.when('/enterprise/updateOffer/:id',{
+    templateUrl: 'templates/enterpriseUpdateOffer.html',
+    controller: 'EnterpriseController'
+  });
+
   $routeProvider.when('/enterprise', {
     templateUrl: 'templates/enterprise.html',
     controller: 'EnterpriseController',
@@ -63,14 +88,10 @@ app.config(function($routeProvider) {
     }
   });
 
-  $routeProvider.when('/books', {
-    templateUrl: 'templates/books.html',
-    controller: 'BooksController',
-    resolve: {
-      books : function(BookService) {
-        return BookService.get();
-      }
-    }
+
+   $routeProvider.when('/enterprise/newOffer', {
+    templateUrl: 'templates/enterpriseNewOffer.html',
+    controller: 'EnterpriseNewOfferController'
   });
 
   $routeProvider.otherwise({ redirectTo: '/login' });
@@ -88,13 +109,6 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService) {
   });
 });
 
-app.factory("BookService", function($http) {
-  return {
-    get: function() {
-      return $http.get('/books');
-    }
-  };
-});
 
 
 app.factory("FlashService", function($rootScope) {
@@ -198,9 +212,6 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
   };
 });
 
-app.controller("BooksController", function($scope, books) {
-  $scope.books = books.data;
-});
 
 app.controller("HomeController", function($scope, $location, AuthenticationService) {
 
@@ -387,6 +398,49 @@ app.directive("showsMessageWhenHovered", function() {
   };
 });
 
+app.factory('OfferShowService', function($http){
+  return {
+    offers : function() {
+      return $.get('/offers/');
+    }
+  };
+});
+
+app.controller('OfferShowController', function($scope, $routeParams, $http, offers){
+  $offers = JSON.parse(offers);
+  for (var i = $offers.length - 1; i >= 0; i--) {
+    if ($offers[i].id == $routeParams.id){
+      $scope.offer = $offers[i];
+    }
+  }
+  
+});
+
+
+app.factory("OffersService", function($http){
+  return {
+    offers : function() {
+      return $.get('/offers');
+    }
+  };
+});
+
+
+app.controller("OffersController", function($http, $scope, $location, offers){
+  $scope.offers = JSON.parse(offers);
+});
+
+app.controller("EnterpriseNewOfferController", function($scope){
+  $scope.createNewOffer = function() {
+      $.post("/enterprise/newOffer", {
+        title : document.getElementById("title").value,
+        description : document.getElementById("description").value,
+        idEnterprise : sessionStorage.getItem('identerprise'),
+        email : sessionStorage.getItem('email')
+      });
+    };
+});
+
 app.factory("EnterpriseService", function($http) {
   return {
     get: function() {
@@ -401,9 +455,8 @@ app.factory("EnterpriseService", function($http) {
   };
 });
 
-
 app.controller("EnterpriseController", function($scope, enterprise, recruiterOffers, otherOffers){
-  
+
   $scope.recruiterOffers = JSON.parse(recruiterOffers);
   $scope.otherOffers = JSON.parse(otherOffers);
 

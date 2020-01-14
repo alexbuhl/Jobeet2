@@ -1,0 +1,27 @@
+<h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>Create a new offer</u></b></h1>
+
+<div class="col-lg-3">
+  <label>Choose a title</label>
+  <input id="title" class="form-control" type="text" value="Title">
+
+  <br />
+  <label>Fill the description</label>
+  <input id="description" class="form-control" type="text" value="Description">
+  <br />
+  <label>Required skills</label>
+  <select id="skillsSelect" class="selectpicker show-menu-arrow form-control" multiple>
+    <div class ="list" ng-repeat="skill in skills">
+      {{skill.name}}
+    </div>
+  </select>
+  <br />
+  <div style="text-align: center; margin-top: 15px;">
+    <button class="btn btn-success" ng-click="createNewOffer()">Create Offer</button>
+  </div>
+</div>
+
+<style>
+  .dropdown-menu {
+    min-width: 200px;
+  }
+</style>

@@ -28,5 +28,9 @@ class EnterpriseController extends BaseController {
     return Response::json(json_encode($otherOffers));
   }
   
+
+  public function updateOffer($id){
+    
+  }
 }
 
