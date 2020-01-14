@@ -29,8 +29,8 @@ class EnterpriseController extends BaseController {
   }
   
 
-  public function updateOffer($id){
-    
+  public function updateOffer(){
+    $offer = DB::table('offer')->where('id', Input::get('id'))->update(['description' => Input::get('description')]);
   }
 }
 

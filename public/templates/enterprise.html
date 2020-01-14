@@ -16,7 +16,7 @@
   <tbody>
     <div class ="list" ng-repeat="offer in recruiterOffers">
         {{ offer.name }}
-        <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer">Manage the offer</a></button>
+        <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
       
     </div>
   </tbody>
@@ -34,7 +34,7 @@
   <tbody>
     <div class ="list" ng-repeat="offer in otherOffers">
       {{ offer.name }}
-      <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/1">Manage the offer</a></button>
+      <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
   </tbody>
 </table>
 <div class="striped-border"></div>

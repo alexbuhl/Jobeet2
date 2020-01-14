@@ -69,7 +69,12 @@ app.config(function($routeProvider) {
 
   $routeProvider.when('/enterprise/updateOffer/:id',{
     templateUrl: 'templates/enterpriseUpdateOffer.html',
-    controller: 'EnterpriseController'
+    controller: 'UpdateOfferController',
+    resolve : {
+      offers : function(OffersService){
+        return OffersService.offers();
+      }
+    }
   });
 
   $routeProvider.when('/enterprise', {
@@ -428,6 +433,24 @@ app.factory("OffersService", function($http){
 
 app.controller("OffersController", function($http, $scope, $location, offers){
   $scope.offers = JSON.parse(offers);
+});
+
+
+app.controller('UpdateOfferController', function($scope, $routeParams, offers){
+  $offerId = $routeParams.id
+  $scope.updateOffer = function(){
+    $.post("enterprise/updateOffer", {
+      id : $offerId,
+      description : document.getElementById("description").value
+    });
+  };
+
+  $offers = JSON.parse(offers);
+  for (var i = $offers.length - 1; i >= 0; i--) {
+    if ($offers[i].id == $offerId){
+      $scope.offer = $offers[i];
+    }
+  }
 });
 
 app.controller("EnterpriseNewOfferController", function($scope){

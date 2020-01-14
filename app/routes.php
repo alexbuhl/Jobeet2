@@ -39,7 +39,8 @@ Route::get('/enterprise/', 'EnterpriseController@index');
 Route::get('/enterprise/recruiterOffers', 'EnterpriseController@recruiterOffers');
 Route::get('/enterprise/otherOffers', 'EnterpriseController@otherOffers');
 
-Route::get('/enterprise/updateOffer/{id}', 'EnterpriseController@updateOffer');
+
+Route::post('/enterprise/updateOffer', 'EnterpriseController@updateOffer');
 
 Route::post('/enterprise/newOffer', 'EnterpriseNewOfferController@newOffer');
 

@@ -1,5 +1,15 @@
 
-<div id="home">
-  <div>
-    <h2>Welcome to the home page!</h2>
+<h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>Update of: {{offer.name}}</u></b></h1>
+
+<div class="col-lg-3">
+  <label><b>You can't change the title</b></label>
+  <input id="title" class="form-control" type="text" placeholder="Title" disabled value={{offer.name}}>
+  <br />
+  <label><b>Update the description</b></label>
+  <input id="description" class="form-control" type="text" placeholder="Description" value="{{offer.description}}">
+  <br />
+  <br />
+  <div style="text-align: center; margin-top: 15px;">
+    <button class="btn btn-success" ng-click="updateOffer()">Update Offer</button>
+  </div>
 </div>
