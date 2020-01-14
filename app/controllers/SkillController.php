@@ -9,7 +9,6 @@ class SkillController extends \BaseController {
 	 */
 	public function getSkills()
 	{
-		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
     	$skills = DB::table('skills')->select('name')->get();
     	return Response::json(json_encode($skills));
 	}
@@ -20,9 +19,16 @@ class SkillController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function getSkillsByUser($id)
 	{
-		//
+		$skillsId = DB::table('userSkills')->where('idUser', $id)->get();
+		$res = array();
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
+		foreach ($skillsId as $elt) {
+			$output->writeln($elt->idSkill);
+			$res[] = DB::table('skills')->select('name')->where('id', $elt->idSkill)->first()->name;
+		}
+		return Response::json(json_encode($res));
 	}
 
 

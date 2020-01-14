@@ -31,6 +31,8 @@ Route::get('/auth/status', 'AuthController@status');
 Route::get('/user/connected','AuthController@getConnected');
 Route::post('/profil/edit', 'ProfilController@edit');
 Route::get('/skills','SkillController@getSkills');
+Route::get('/user/skills/{id}','SkillController@getSkillsByUser');
+
 
 
 Route::get('/enterprise/', 'EnterpriseController@index');

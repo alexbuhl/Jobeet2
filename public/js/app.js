@@ -228,10 +228,14 @@ app.factory("ProfilService", function($http) {
 });
 
 app.controller("ProfilController", function($scope, skill) {
-    $(document).ready(function () {  
-         $('select').selectpicker(); 
-     });
-    $scope.skills = skill;
+    var toAdd = [];
+    $.get("/user/skills/1").done(function(res){
+          $ymp= JSON.parse(res);
+          $ymp.forEach((element, index) => {
+            toAdd.push(element);
+          });
+         }
+       );
     $scope.username = sessionStorage.getItem('username');
     $scope.email = sessionStorage.getItem('email');
     $scope.description = sessionStorage.getItem('description');
@@ -242,6 +246,7 @@ app.controller("ProfilController", function($scope, skill) {
     $scope.off = sessionStorage.getItem('off');
     $scope.onsoft = sessionStorage.getItem('onsoft');
     $scope.onhard = sessionStorage.getItem('onhard');
+
     $scope.profil = function() {
       console.log("called");
       document.getElementById("edit").style.display = "none";    
@@ -250,6 +255,19 @@ app.controller("ProfilController", function($scope, skill) {
       document.getElementById("tab1").classList.add('active');
     };
     $scope.edit = function() {
+      skill.forEach((element, index) => {
+      if(jQuery.inArray(element, toAdd) == -1){
+          let option_elem = document.createElement('option');
+          option_elem.value = index + 1;
+          option_elem.textContent = element;
+          $('#skillSelected').append(option_elem);
+        } else{
+          let option_elem = document.createElement('option');
+          option_elem.value = index + 1;
+          option_elem.textContent = element;
+          $('#removeSkillSelected').append(option_elem);
+        }
+      });
       document.getElementById("edit").style.display = "block";    
       document.getElementById("profil").style.display = "none";
       document.getElementById("tab1").classList.remove('active');
@@ -258,26 +276,53 @@ app.controller("ProfilController", function($scope, skill) {
     };
 
     $scope.send = function() {
-      console.log(document.getElementById("off").checked);
-      console.log(document.getElementById("on-soft").checked);
-      console.log(document.getElementById("on-hard").checked);
       var $self = $(this);
       var brands = document.getElementById("skillSelected");
       var selected = [];
       $(brands).each(function(index, brand){
         selected.push($(this).val());
       });
+      selected = selected[0];
+      if(selected){
+        selected = selected.map(function (x) { 
+          return parseInt(x, 10); 
+        });
+      }
       var tab = document.getElementById("removeSkillSelected");
       var removeSelected = [];
       $(tab).each(function(index, tmp){
         removeSelected.push($(this).val());
       });
+      removeSelected = removeSelected[0];
+      if(removeSelected){
+        removeSelected = removeSelected.map(function (x) { 
+          return parseInt(x, 10); 
+        });
+      }
       var myFile = $('#myFile').prop('files');
       var reader = new FileReader();
-      reader.readAsDataURL(myFile[0]);
-      reader.onload = function () {
-        $.post("/profil/edit", {
-          img : reader.result, 
+      if(myFile.length > 0){
+        reader.readAsDataURL(myFile[0]);
+        reader.onload = function () {
+          console.log("image");
+          $.post("/profil/edit", {
+            img : reader.result, 
+            email: sessionStorage.getItem('email'), 
+            username: document.getElementById("name").value,
+            description: document.getElementById("description").value,
+            company: document.getElementById("company").value,
+            hobbie: document.getElementById("hobbies").value,
+            skillSelected: selected,
+            removeSkillSelected: removeSelected,
+            isPremium: document.getElementById("isPremium").checked,
+            off: document.getElementById("off").checked,
+            onsoft: document.getElementById("on-soft").checked,
+            onhard: document.getElementById("on-hard").checked
+          });
+        }
+      } else {
+      $.post("/profil/edit", {
+          img : null, 
           email: sessionStorage.getItem('email'), 
           username: document.getElementById("name").value,
           description: document.getElementById("description").value,
@@ -290,39 +335,38 @@ app.controller("ProfilController", function($scope, skill) {
           onsoft: document.getElementById("on-soft").checked,
           onhard: document.getElementById("on-hard").checked
         });
-        $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
-          $user = JSON.parse(res);
-          sessionStorage.setItem('username', $user.username);
-          sessionStorage.setItem('email', $user.email);
-          sessionStorage.setItem('description', $user.description);
-          sessionStorage.setItem('role', $user.role);
-          sessionStorage.setItem('hobbie', $user.hobbie);
-          sessionStorage.setItem('company', $user.company);
-          sessionStorage.setItem('identerprise', $user.identerprise);
-          sessionStorage.setItem('image', $user.image);
-          sessionStorage.setItem('isPremium', $user.isPremium);
-          sessionStorage.setItem('off', $user.off);
-          sessionStorage.setItem('onsoft', $user.onsoft);
-          sessionStorage.setItem('onhard', $user.onhard);
-          $scope.username = sessionStorage.getItem('username');
-          $scope.email = sessionStorage.getItem('email');
-          $scope.description = sessionStorage.getItem('description');
-          $scope.hobbie = sessionStorage.getItem('hobbie');
-          $scope.company = sessionStorage.getItem('company');
-          $scope.image = sessionStorage.getItem('image');
-          $scope.isPremium = sessionStorage.getItem('isPremium');
-          $scope.off = sessionStorage.getItem('off');
-          $scope.onsoft = sessionStorage.getItem('onsoft');
-          $scope.onhard = sessionStorage.getItem('onhard');
-          document.getElementById("edit").style.display = "none";    
-          document.getElementById("profil").style.display = "block";
-          document.getElementById("tab2").classList.remove('active');
-          document.getElementById("tab1").classList.add('active');
-          document.location.reload(true);
+      }
+      $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
+        $user = JSON.parse(res);
+        sessionStorage.setItem('username', $user.username);
+        sessionStorage.setItem('email', $user.email);
+        sessionStorage.setItem('description', $user.description);
+        sessionStorage.setItem('role', $user.role);
+        sessionStorage.setItem('hobbie', $user.hobbie);
+        sessionStorage.setItem('company', $user.company);
+        sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+        sessionStorage.setItem('image', $user.image);
+        sessionStorage.setItem('isPremium', $user.isPremium);
+        sessionStorage.setItem('off', $user.off);
+        sessionStorage.setItem('onsoft', $user.onsoft);
+        sessionStorage.setItem('onhard', $user.onhard);
+        $scope.username = sessionStorage.getItem('username');
+        $scope.email = sessionStorage.getItem('email');
+        $scope.description = sessionStorage.getItem('description');
+        $scope.hobbie = sessionStorage.getItem('hobbie');
+        $scope.company = sessionStorage.getItem('company');
+        $scope.image = sessionStorage.getItem('image');
+        $scope.isPremium = sessionStorage.getItem('isPremium');
+        $scope.off = sessionStorage.getItem('off');
+        $scope.onsoft = sessionStorage.getItem('onsoft');
+        $scope.onhard = sessionStorage.getItem('onhard');
+        document.getElementById("edit").style.display = "none";    
+        document.getElementById("profil").style.display = "block";
+        document.getElementById("tab2").classList.remove('active');
+        document.getElementById("tab1").classList.add('active');
+        document.location.reload(true);
         });
       };
-    };
-
 });
 
 

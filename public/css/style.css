@@ -95,6 +95,13 @@ ol {
 	background-size: cover;
 }
 
+.bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+    position: absolute;
+    display: inline-block;
+    right: -150px;
+    margin-top: 5px;
+}
+
 /*------------------------
   Common Elements
 --------------------------*/

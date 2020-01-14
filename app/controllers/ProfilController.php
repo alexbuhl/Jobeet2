@@ -9,9 +9,22 @@ class ProfilController extends \BaseController {
 	 */
 	public function edit()
 	{
-		//$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
-    	//$output->writeln(Input::get('email'));
-		DB::table('users')->where('email', Input::get('email'))->update(['username' => Input::get('username'), 'image' => Input::get('img'), 'description' => Input::get('description'), 'hobbie' => Input::get('hobbie'), 'company' => Input::get('company'), 'isPremium' => Input::get('isPremium') === 'true', 'off' => Input::get('off') === 'true', 'onsoft' => Input::get('onsoft') === 'true', 'onhard' => Input::get('onhard') === 'true']);
+		if(Input::get('img')){
+			DB::table('users')->where('email', Input::get('email'))->update(['username' => Input::get('username'), 'image' => Input::get('img'), 'description' => Input::get('description'), 'hobbie' => Input::get('hobbie'), 'company' => Input::get('company'), 'isPremium' => Input::get('isPremium') === 'true', 'off' => Input::get('off') === 'true', 'onsoft' => Input::get('onsoft') === 'true', 'onhard' => Input::get('onhard') === 'true']);	
+		} else {
+			DB::table('users')->where('email', Input::get('email'))->update(['username' => Input::get('username'), 'description' => Input::get('description'), 'hobbie' => Input::get('hobbie'), 'company' => Input::get('company'), 'isPremium' => Input::get('isPremium') === 'true', 'off' => Input::get('off') === 'true', 'onsoft' => Input::get('onsoft') === 'true', 'onhard' => Input::get('onhard') === 'true']);
+		}
+		$user = DB::table('users')->where('email', Input::get('email'))->first();
+		if(Input::get('skillSelected')){
+			foreach (Input::get('skillSelected') as $key) {
+				DB::table('userSkills')->insert(['idUser' => $user->id, 'idSkill' => $key]);
+			}
+		}
+		if(Input::get('removeSkillSelected')){
+			foreach (Input::get('removeSkillSelected') as $key) {
+				DB::table('userSkills')->where(['idUser' => $user->id,'idSkill' => $key])->delete();
+			}
+		}
 	}
 
 
