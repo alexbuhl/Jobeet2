@@ -10,6 +10,10 @@ class EnterpriseNewOfferController extends BaseController {
     	Input::get('idEnterprise'),
     	$id 
     ]);
+	if(Input::get('selectedSkill')){
+		foreach (Input::get('selectedSkill') as $key) {
+			DB::table('offerSkill')->insert(['idOffer' => DB::table('offer')->where('description', Input::get('description'))->first()->id, 'idSkill' => $key]);
+		}
+	}
   }
-  
 }

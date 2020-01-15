@@ -8,6 +8,15 @@
   <label><b>Update the description</b></label>
   <input id="description" class="form-control" type="text" placeholder="Description" value="{{offer.description}}">
   <br />
+  <label>Add skills</label>
+  <select id="skillSelected" class="selectpicker" multiple data-live-search="true">
+  </select>
+  <br />
+  <div style="margin-bottom: 30px;"></div>
+  <label>Remove skills</label>
+  <select id="removeSkillSelected" class="selectpicker" multiple data-live-search="true">
+  </select>
+  <br />
   <br />
   <div style="text-align: center; margin-top: 15px;">
     <button class="btn btn-success" ng-click="updateOffer()">Update Offer</button>

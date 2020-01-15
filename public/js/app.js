@@ -104,6 +104,12 @@ app.config(function($routeProvider) {
     resolve : {
       offers : function(OffersService){
         return OffersService.offers();
+      },
+      skill : function(OffersService){
+        return OffersService.offersSkills();
+      },
+      allSkills : function(ProfilService) {
+        return ProfilService.get();
       }
     }
   });
@@ -137,7 +143,12 @@ app.config(function($routeProvider) {
 
    $routeProvider.when('/enterprise/newOffer', {
     templateUrl: 'templates/enterpriseNewOffer.html',
-    controller: 'EnterpriseNewOfferController'
+    controller: 'EnterpriseNewOfferController',
+    resolve: {
+      skill : function(ProfilService) {
+        return ProfilService.get();
+      }
+    }
   });
 
   $routeProvider.otherwise({ redirectTo: '/login' });
@@ -740,13 +751,69 @@ app.controller("OffersController", function($http, $scope, offers, usersSkills, 
 });
 
 
-app.controller('UpdateOfferController', function($scope, $routeParams, offers){
+app.controller('UpdateOfferController', function($scope, $routeParams, offers, skill, allSkills, $location){
   $offerId = $routeParams.id
+  skill = JSON.parse(skill);
+  console.log(skill);
+  console.log(allSkills);
+  toRemove = [];
+  for(elt in skill){
+    if(skill[elt].idOffer == $offerId){
+      for(val in allSkills){
+        if(allSkills[val].id == skill[elt].idSkill){
+          toRemove.push(allSkills[val].name)
+          let option_elem = document.createElement('option');
+          option_elem.value = parseInt(val, 10) + 1;
+          option_elem.textContent = allSkills[val].name;
+          $('#removeSkillSelected').append(option_elem);
+        }
+      }
+    }
+  }
+  for(val in allSkills){
+    if(toRemove.indexOf(allSkills[val].name) == -1){
+      let option_elem = document.createElement('option');
+      option_elem.value = parseInt(val, 10) + 1;
+      option_elem.textContent = allSkills[val].name;
+      $('#skillSelected').append(option_elem);
+    }
+  }
+  let option_elem = document.createElement('option');
+          option_elem.value = parseInt(val, 10) + 1;
+          option_elem.textContent = allSkills[val].name;
+          $('#removeSkillSelected').append(option_elem);
+  $('select').selectpicker();      
   $scope.updateOffer = function(){
-    $.post("enterprise/updateOffer", {
-      id : $offerId,
-      description : document.getElementById("description").value
-    });
+    var brands = document.getElementById("skillSelected");
+      var selected = [];
+      $(brands).each(function(index, brand){
+        selected.push($(this).val());
+      });
+      selected = selected[0];
+      if(selected){
+        selected = selected.map(function (x) { 
+          return parseInt(x, 10); 
+        });
+      }
+      var tab = document.getElementById("removeSkillSelected");
+      var removeSelected = [];
+      $(tab).each(function(index, tmp){
+        removeSelected.push($(this).val());
+      });
+      removeSelected = removeSelected[0];
+      if(removeSelected){
+        removeSelected = removeSelected.map(function (x) { 
+          return parseInt(x, 10); 
+        });
+      }
+      $.post("enterprise/updateOffer", {
+        id : $offerId,
+        description : document.getElementById("description").value,
+        skillSelected : selected,
+        removeSkillSelected : removeSelected
+      }).done(function(res){
+          $location.path('/enterprise');
+      });
   };
 
   $offers = JSON.parse(offers);
@@ -758,7 +825,6 @@ app.controller('UpdateOfferController', function($scope, $routeParams, offers){
 });
 
 app.controller('UpdateEnterpriseController', function($scope, $http, enterprise){
-
   $scope.enterprise = JSON.parse(enterprise);
   $scope.updateEnterprise = function(){
     $.post("enterprise/updateEnterprise", {
@@ -770,15 +836,34 @@ app.controller('UpdateEnterpriseController', function($scope, $http, enterprise)
   };
 });
 
-app.controller("EnterpriseNewOfferController", function($scope){
+app.controller("EnterpriseNewOfferController", function($scope, $location, skill){
+  skill.forEach((element, index) => {  
+    let option_elem = document.createElement('option');
+    option_elem.value = index + 1;
+    option_elem.textContent = element.name;
+    $('#skillSelected').append(option_elem);
+  });
+  $('select').selectpicker();    
   $scope.createNewOffer = function() {
+      var brands = document.getElementById("skillSelected");
+      var selected = [];
+      $(brands).each(function(index, brand){
+        selected.push($(this).val());
+      });
+      selected = selected[0];
+      if(selected){
+        selected = selected.map(function (x) { 
+          return parseInt(x, 10); 
+        });
+      }
       $.post("/enterprise/newOffer", {
         title : document.getElementById("title").value,
         description : document.getElementById("description").value,
         idEnterprise : sessionStorage.getItem('identerprise'),
-        email : sessionStorage.getItem('email')
+        email : sessionStorage.getItem('email'),
+        selectedSkill : selected
       }).done(function(res){
-        document.location.reload(true);
+        $location.path('/enterprise');
       });
     };
 });

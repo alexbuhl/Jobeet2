@@ -31,6 +31,16 @@ class EnterpriseController extends BaseController {
 
   public function updateOffer(){
     DB::table('offer')->where('id', Input::get('id'))->update(['description' => Input::get('description')]);
+    if(Input::get('skillSelected')){
+      foreach (Input::get('skillSelected') as $key) {
+        DB::table('offerSkill')->insert(['idOffer' => Input::get('id'), 'idSkill' => $key]);
+      }
+    }
+    if(Input::get('removeSkillSelected')){
+      foreach (Input::get('removeSkillSelected') as $key) {
+        DB::table('offerSkill')->where(['idOffer' => Input::get('id'),'idSkill' => $key])->delete();
+      }
+    }
   }
 
   public function deleteOffer(){

@@ -9,10 +9,7 @@
   <input id="description" class="form-control" type="text" placeholder="Description">
   <br />
   <label>Required skills</label>
-  <select id="skillsSelect" class="selectpicker show-menu-arrow form-control" multiple>
-    <div class ="list" ng-repeat="skill in skills">
-      {{skill.name}}
-    </div>
+  <select id="skillSelected" class="selectpicker" multiple data-live-search="true">
   </select>
   <br />
   <div style="text-align: center; margin-top: 15px;">
