@@ -863,6 +863,12 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
      });
    };
    
+   $scope.acceptNew = function(idUser) {
+     $.post('/offer/acceptNewUser', {idOffer: $routeParams.id, idUser: idUser}).done(function(res){
+        document.location.reload(true);
+     });
+   };
+
    $scope.delete = function(idUser) {
      $.post('/offer/deleteUser', {idOffer: $routeParams.id, idUser: idUser}).done(function(res){
         document.location.reload(true);

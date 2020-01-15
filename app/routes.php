@@ -45,6 +45,7 @@ Route::get('/offer/{id}', 'OffersController@getOffer');
 Route::get('/offersSkills', 'SkillController@getOffersSkills');
 
 Route::post('/offer/acceptUser', 'OffersController@acceptUser');
+Route::post('/offer/acceptNewUser', 'OffersController@acceptNewUser');
 Route::post('/offer/deleteUser', 'OffersController@deleteUser');
 
 

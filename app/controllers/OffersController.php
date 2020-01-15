@@ -16,12 +16,16 @@ class OffersController extends BaseController {
 		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->update(['isAccepted' => true]);
 	}
 
+	public function acceptNewUser(){
+		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => true]);
+	}
+
+
 	public function deleteUser(){
 		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->delete();
 	}
 
 	public function apply(){
-		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
 		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => false ]);
 	}
 }
