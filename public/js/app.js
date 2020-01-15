@@ -496,9 +496,8 @@ app.controller("ProfilController", function($scope, skill, allUserSkill) {
     $scope.onhard = sessionStorage.getItem('onhard');
 
     $scope.profil = function() {
-      console.log("called");
-      document.getElementById("edit").style.display = "none";    
-      document.getElementById("profil").style.display = "block";
+      document.getElementById("edituser").style.display = "none";    
+      document.getElementById("profiluser").style.display = "block";
       document.getElementById("tab2").classList.remove('active');
       document.getElementById("tab1").classList.add('active');
     };
@@ -516,8 +515,9 @@ app.controller("ProfilController", function($scope, skill, allUserSkill) {
           $('#removeSkillSelected').append(option_elem);
         }
       });
-      document.getElementById("edit").style.display = "block";    
-      document.getElementById("profil").style.display = "none";
+      console.log("edit");
+      document.getElementById("edituser").style.display = "block";    
+      document.getElementById("profiluser").style.display = "none";
       document.getElementById("tab1").classList.remove('active');
       document.getElementById("tab2").classList.add('active');
       $('select').selectpicker();    
@@ -565,6 +565,38 @@ app.controller("ProfilController", function($scope, skill, allUserSkill) {
             off: document.getElementById("off").checked,
             onsoft: document.getElementById("on-soft").checked,
             onhard: document.getElementById("on-hard").checked
+          }).done(function(res){
+            $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
+              $user = JSON.parse(res);
+              sessionStorage.setItem('username', $user.username);
+              sessionStorage.setItem('email', $user.email);
+              sessionStorage.setItem('description', $user.description);
+              sessionStorage.setItem('role', $user.role);
+              sessionStorage.setItem('hobbie', $user.hobbie);
+              sessionStorage.setItem('company', $user.company);
+              sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+              sessionStorage.setItem('image', $user.image);
+              sessionStorage.setItem('isPremium', $user.isPremium);
+              sessionStorage.setItem('off', $user.off);
+              sessionStorage.setItem('onsoft', $user.onsoft);
+              sessionStorage.setItem('onhard', $user.onhard);
+              $scope.username = sessionStorage.getItem('username');
+              $scope.email = sessionStorage.getItem('email');
+              $scope.description = sessionStorage.getItem('description');
+              $scope.hobbie = sessionStorage.getItem('hobbie');
+              $scope.company = sessionStorage.getItem('company');
+              $scope.image = sessionStorage.getItem('image');
+              $scope.isPremium = sessionStorage.getItem('isPremium');
+              $scope.off = sessionStorage.getItem('off');
+              $scope.onsoft = sessionStorage.getItem('onsoft');
+              $scope.onhard = sessionStorage.getItem('onhard');
+              document.location.reload(true);
+              document.getElementById("edituser").style.display = "none";    
+              document.getElementById("profiluser").style.display = "block";
+              document.getElementById("tab2").classList.remove('active');
+              document.getElementById("tab1").classList.add('active');
+              document.location.reload(true);
+            });
           });
         }
       } else {
@@ -581,39 +613,40 @@ app.controller("ProfilController", function($scope, skill, allUserSkill) {
           off: document.getElementById("off").checked,
           onsoft: document.getElementById("on-soft").checked,
           onhard: document.getElementById("on-hard").checked
-        });
-      }
-      $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
-        $user = JSON.parse(res);
-        sessionStorage.setItem('username', $user.username);
-        sessionStorage.setItem('email', $user.email);
-        sessionStorage.setItem('description', $user.description);
-        sessionStorage.setItem('role', $user.role);
-        sessionStorage.setItem('hobbie', $user.hobbie);
-        sessionStorage.setItem('company', $user.company);
-        sessionStorage.setItem('idEntreprise', $user.idEntreprise);
-        sessionStorage.setItem('image', $user.image);
-        sessionStorage.setItem('isPremium', $user.isPremium);
-        sessionStorage.setItem('off', $user.off);
-        sessionStorage.setItem('onsoft', $user.onsoft);
-        sessionStorage.setItem('onhard', $user.onhard);
-        $scope.username = sessionStorage.getItem('username');
-        $scope.email = sessionStorage.getItem('email');
-        $scope.description = sessionStorage.getItem('description');
-        $scope.hobbie = sessionStorage.getItem('hobbie');
-        $scope.company = sessionStorage.getItem('company');
-        $scope.image = sessionStorage.getItem('image');
-        $scope.isPremium = sessionStorage.getItem('isPremium');
-        $scope.off = sessionStorage.getItem('off');
-        $scope.onsoft = sessionStorage.getItem('onsoft');
-        $scope.onhard = sessionStorage.getItem('onhard');
-        document.location.reload(true);
-        document.getElementById("edit").style.display = "none";    
-        document.getElementById("profil").style.display = "block";
-        document.getElementById("tab2").classList.remove('active');
-        document.getElementById("tab1").classList.add('active');
-        document.location.reload(true);
-        });
+        }).done(function(res){
+            $.get("/user/connected",  {email: sessionStorage.getItem('email')}).done(function(res){
+              $user = JSON.parse(res);
+              sessionStorage.setItem('username', $user.username);
+              sessionStorage.setItem('email', $user.email);
+              sessionStorage.setItem('description', $user.description);
+              sessionStorage.setItem('role', $user.role);
+              sessionStorage.setItem('hobbie', $user.hobbie);
+              sessionStorage.setItem('company', $user.company);
+              sessionStorage.setItem('idEntreprise', $user.idEntreprise);
+              sessionStorage.setItem('image', $user.image);
+              sessionStorage.setItem('isPremium', $user.isPremium);
+              sessionStorage.setItem('off', $user.off);
+              sessionStorage.setItem('onsoft', $user.onsoft);
+              sessionStorage.setItem('onhard', $user.onhard);
+              $scope.username = sessionStorage.getItem('username');
+              $scope.email = sessionStorage.getItem('email');
+              $scope.description = sessionStorage.getItem('description');
+              $scope.hobbie = sessionStorage.getItem('hobbie');
+              $scope.company = sessionStorage.getItem('company');
+              $scope.image = sessionStorage.getItem('image');
+              $scope.isPremium = sessionStorage.getItem('isPremium');
+              $scope.off = sessionStorage.getItem('off');
+              $scope.onsoft = sessionStorage.getItem('onsoft');
+              $scope.onhard = sessionStorage.getItem('onhard');
+              document.location.reload(true);
+              document.getElementById("edituser").style.display = "none";    
+              document.getElementById("profiluser").style.display = "block";
+              document.getElementById("tab2").classList.remove('active');
+              document.getElementById("tab1").classList.add('active');
+              document.location.reload(true);
+            });
+          });
+        }      
       };
 });
 
