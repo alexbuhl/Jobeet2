@@ -1,0 +1,19 @@
+<p><h3>Suggestions</h3><p>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th scope="col">Candidate</th>
+      <th scope="col">Percentage</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr ng-repeat="(i, suggestion) in suggestions">
+        <td style="text-align: center;">{{ suggestion.username }}</a></td>
+        <td style="text-align: center;">{{ percentages[i]}}</td>
+        <td style="text-align: center;">
+            <button class="acceptSuggestion btn btn-success" id="{{suggestion.id}}">Accept</button>
+        </td>
+      </tr>
+  </tbody>
+</table>

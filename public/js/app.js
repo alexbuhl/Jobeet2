@@ -82,6 +82,8 @@ app.config(function($routeProvider) {
     }
   });
 
+
+
   $routeProvider.when('/offers/:id', {
     templateUrl: 'templates/offersShow.html',
     controller: 'OfferShowController',
@@ -95,6 +97,31 @@ app.config(function($routeProvider) {
       offersSkills : function(OfferShowService){
         return OfferShowService.offersSkills();
       }
+    }
+  });
+
+
+
+  $routeProvider.when('/enterprise/manageOffer/:id', {
+    templateUrl: 'templates/manageOffer.html',
+    controller: 'ManageOfferController',
+    resolve : {
+      offers : function(OffersService){
+        return OffersService.offers();
+      },
+      userSkills : function(OffersService){
+        return OffersService.usersSkills();
+      },
+      offersSkills : function(OffersService){
+        return OffersService.offersSkills();
+      },
+      users : function(ChatService){
+         return ChatService.users();
+      },
+      applics : function(OfferShowService){
+        return OfferShowService.applications();
+      }
+
     }
   });
 
@@ -686,6 +713,10 @@ app.factory('OfferShowService', function($http){
      });
      return tab;
     },
+
+    applications : function(){
+      $.get("/application/all");
+    }
   };
 });
 
@@ -721,6 +752,138 @@ app.controller('OfferShowController', function($scope, $routeParams, $http, offe
 
 });
 
+app.factory('ManageOfferService', function($http){
+  return {
+    applications : function(){
+      $.get("/application/all");
+    }
+  };
+  
+});
+
+app.controller("ManageOfferController", function($routeParams, $scope, offers, userSkills, offersSkills, users, applics){
+  console.log(applics);
+  $offers = JSON.parse(offers);
+  $usersSkills = JSON.parse(userSkills);
+  $offersSkills = JSON.parse(offersSkills);
+  $users = users; //parsed in service
+  console.log(applics);
+  $applications = JSON.parse(applics);
+
+  offer = null;
+  for (var i = $offers.length - 1; i >= 0; i--) {
+    if ($offers[i].id == $routeParams.id){
+      offer = $offers[i];
+    }
+  }
+
+  myOfferSkills = [];
+  for (var j = $offersSkills.length - 1; j >= 0; j--) {
+    if ($offersSkills[j].idOffer == offer.id){
+      myOfferSkills.push($offersSkills[j]);
+    }
+  }
+
+  applicants = [];
+  nonApplicants = [];
+
+
+  for (var m = $applications.length - 1; m >= 0; m--) {
+    application = $applications[m];
+    if (application.idOffer == offer.id){
+      for (var n = $users.length - 1; n >= 0; n--) {
+        if ($users[n].id == application.idUser){
+          applicants.push($users[n]);
+        }
+
+      }
+    }
+  }
+
+  
+  for (var o = $applications.length - 1; o >= 0; o--) {
+    for (var p = applicants.length - 1; p >= 0; p--) {
+      if ($users[o].id == applicants[p].id){
+        break;
+      }
+      if (p == 0){
+        nonApplicants.push($users[o]);
+      }
+    }
+  }
+
+
+  percentagesSuggestions = [];
+  for (var k = nonApplicants.length - 1; k >= 0; k--) {
+    myUser = $users[k];
+
+    myUserSkills = []
+    for (var l = $usersSkills.length - 1; l >= 0; l--) {
+      if ($usersSkills[l].idUser == myUser.id){
+        myUserSkills.push($usersSkills[l])
+      }
+    }
+
+   percentagesSuggestions.push(calculPercentage(myOfferSkills, myUserSkills));
+  }
+
+  percentagesApplicants = [];
+  for (var k = applicants.length - 1; k >= 0; k--) {
+    myUser = $users[k];
+
+    myUserSkills = []
+    for (var l = $usersSkills.length - 1; l >= 0; l--) {
+      if ($usersSkills[l].idUser == myUser.id){
+        myUserSkills.push($usersSkills[l])
+      }
+    }
+    percentagesApplicants.push(calculPercentage(myOfferSkills, myUserSkills));
+  }
+
+   
+   $scope.percentagesSuggestions = percentagesSuggestions;
+   $scope.percentagesApplicants = percentagesApplicants;
+   $scope.suggestions = $users;
+
+   
+/*
+  percentages = [];
+  for (var k = $users.length - 1; k >= 0; k--) {
+    myUser = $users[k];
+
+
+    myUserSkills = []
+    for (var l = $usersSkills.length - 1; l >= 0; l--) {
+      if ($usersSkills[l].idUser == myUser.id){
+        myUserSkills.push($usersSkills[l])
+      }
+    }
+
+    percentages.push(calculPercentage(myOfferSkills, myUserSkills));
+  }
+  
+  $scope.percentages = percentages;
+  $scope.suggestions = $users;*/
+
+
+});
+
+function calculPercentage(myOfferSkills, myUserSkills){
+  gotIt = 0
+    for (var k = myOfferSkills.length - 1; k >= 0; k--) {
+      for (var l = myUserSkills.length - 1; l >= 0; l--) {
+        if (myUserSkills[l].idSkill == myOfferSkills[k].idSkill){
+          gotIt = gotIt + 1;
+        }
+      }  
+    }
+    if (myOfferSkills.length == 0){
+      return 100;
+    }
+    else{
+      return gotIt * 100 / myOfferSkills.length;
+    }
+}
 
 app.factory("OffersService", function($http){
   return {
@@ -735,7 +898,6 @@ app.factory("OffersService", function($http){
     }
   };
 });
-
 
 app.controller("OffersController", function($http, $scope, offers, usersSkills, offersSkills){
   $offers = JSON.parse(offers);
@@ -761,22 +923,7 @@ app.controller("OffersController", function($http, $scope, offers, usersSkills, 
         myOfferSkills.push($offersSkills[j]);
       }  
     }
-
-    gotIt = 0
-    for (var k = myOfferSkills.length - 1; k >= 0; k--) {
-      for (var l = $myUserSkills.length - 1; l >= 0; l--) {
-        if ($myUserSkills[l].idSkill == myOfferSkills[k].idSkill){
-          gotIt = gotIt + 1;
-        }
-      }  
-    }
-    if (myOfferSkills.length == 0){
-      percentages.push(100);
-    }
-    else{
-      percent = (gotIt * 100 / myOfferSkills.length);
-      percentages.push(percent);
-    }
+    percentages.push(calculPercentage(myOfferSkills, $myUserSkills)); 
   }
   $scope.percentages = percentages;
 

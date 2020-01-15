@@ -18,8 +18,9 @@
   <tbody>
     <tr style="text-align: center;" ng-repeat="offer in recruiterOffers">
         <td style="text-align: center;">{{ offer.name }}</td>
-        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
-        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button></td>
+        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Update the offer</a></button>
+        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
+        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a></td>
   </tbody>
 </table>
 
@@ -35,10 +36,14 @@
   <tbody>
     <tr style="text-align: center;" ng-repeat="offer in otherOffers">
         <td style="text-align: center;">{{ offer.name }}</td>
-        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
-        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button></td>
+        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Update the offer</a></button>
+        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
+        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a></td>
+
   </tbody>
 </table>
+
+
 <div class="striped-border"></div>
   <div style="text-align: center;">
     <div style=" display: inline-block; margin-right: 15px;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/newOffer">Create a new offer</a></button></div>
