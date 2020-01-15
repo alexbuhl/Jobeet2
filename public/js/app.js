@@ -103,6 +103,15 @@ app.config(function($routeProvider) {
     }
   });
 
+  $routeProvider.when('/enterprise/updateEnterprise', {
+    templateUrl : 'templates/enterpriseUpdate.html',
+    controller : 'UpdateEnterpriseController',
+    resolve :{
+      enterprise : function(EnterpriseService){
+        return EnterpriseService.get();
+      }
+    }
+  });
 
    $routeProvider.when('/enterprise/newOffer', {
     templateUrl: 'templates/enterpriseNewOffer.html',
@@ -515,6 +524,19 @@ app.controller('UpdateOfferController', function($scope, $routeParams, offers){
       $scope.offer = $offers[i];
     }
   }
+});
+
+app.controller('UpdateEnterpriseController', function($scope, $http, enterprise){
+
+  $scope.enterprise = JSON.parse(enterprise);
+  $scope.updateEnterprise = function(){
+    $.post("enterprise/updateEnterprise", {
+      id : sessionStorage.getItem('identerprise'),
+      description: document.getElementById("description").value
+    }).done(function(res){
+      document.location.reload(true);
+    });
+  };
 });
 
 app.controller("EnterpriseNewOfferController", function($scope){

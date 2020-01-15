@@ -38,6 +38,7 @@ Route::get('/userSkills','SkillController@getAllUserSkills');
 Route::get('/enterprise/', 'EnterpriseController@index');
 Route::get('/enterprise/recruiterOffers', 'EnterpriseController@recruiterOffers');
 Route::get('/enterprise/otherOffers', 'EnterpriseController@otherOffers');
+Route::post('/enterprise/updateEnterprise', 'EnterpriseController@updateEnterprise');
 
 
 Route::post('/enterprise/updateOffer', 'EnterpriseController@updateOffer');

@@ -36,5 +36,11 @@ class EnterpriseController extends BaseController {
   public function deleteOffer(){
     DB::table('offer')->where('id', Input::get('id'))->delete();
   }
+
+  public function updateEnterprise(){
+    $output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
+    $output->writeln(Input::get('description'));
+    DB::table('enterprise')->where('id', Input::get('id'))->update(['description' => Input::get('description')]);
+  }
 }
 
