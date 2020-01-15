@@ -225,14 +225,13 @@ app.factory("AuthenticationService", function($http, $sanitize, SessionService, 
 
 app.controller("LoginController", function($scope, $location, AuthenticationService) {
   $scope.credentials = { email: "", password: "" };
-    
+
     var jsonCredentials = function(credentials) {
     return {
       email: credentials.email,
       password: credentials.password,
     };
   };
-
   $scope.login = function() {
     AuthenticationService.login($scope.credentials).success(function() {
       $.get("/user/connected",  jsonCredentials($scope.credentials)).done(function(res){
@@ -250,6 +249,7 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('off', $user.off);
         sessionStorage.setItem('onsoft', $user.onsoft);
         sessionStorage.setItem('onhard', $user.onhard);
+        sessionStorage.setItem('reload', 0);
       });
       $location.path('/home');
     });
@@ -258,7 +258,10 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
 
 
 app.controller("HomeController", function($scope, $location, AuthenticationService) {
-
+  if(sessionStorage.getItem('reload') == 0){
+    sessionStorage.setItem('reload', 1);
+    document.location.reload(true);
+  }
   $scope.logout = function() {
     AuthenticationService.logout().success(function() {
       $location.path('/login');
@@ -538,7 +541,6 @@ app.controller("ProfilController", function($scope, skill, allUserSkill) {
       if(myFile.length > 0){
         reader.readAsDataURL(myFile[0]);
         reader.onload = function () {
-          console.log("image");
           $.post("/profil/edit", {
             img : reader.result, 
             email: sessionStorage.getItem('email'), 

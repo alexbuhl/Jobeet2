@@ -17,7 +17,12 @@
 <body>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
+<script type="text/javascript">
+  var isRecruiter = false;
+  if(sessionStorage.getItem('role') == 1){
+    isRecruiter = true;
+  }
+</script>
 <div class="navbar navbar-dark" style="width: 100%; background-color: #383838;">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -30,11 +35,10 @@
           </div>
           <div class="collapse navbar-collapse" id="collapibleMenu">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/#/offers" style="color: white;">Offers</a></li>
-                <li><a href='/#/enterprise' style="color: white;">Enterprise</a></li>
-                <li><a href="/#/profil" style="color: white;">Profil</a></li>
-                <li><a onclick="logout()" style="color: white;">Logout</a></li>
-                
+                  <li id="isRecruiter" style="display: none;"><a href='/#/enterprise' style="color: white;">Enterprise</a></li>
+                  <li id="offer" style="display: none;"><a href="/#/offers" style="color: white;">Offers</a></li>                
+                  <li id="profil" style="display: none;"><a href="/#/profil" style="color: white;">Profil</a></li>                
+                  <li id="logout" style="display: none;"><a onclick="logout()" style="color: white;">Logout</a></li>                
             </ul>
           </div>
         </div>
@@ -54,7 +58,24 @@
 </html>
 
 <script type="text/javascript">
+  if(sessionStorage.getItem('authenticated')){
+    if(!isRecruiter){
+        document.getElementById('isRecruiter').style = "display: none;";
+        document.getElementById('offer').style = "display: block;";
+        document.getElementById('profil').style = "display: block;";
+        document.getElementById('logout').style = "display: block;";    
+      } else {
+        document.getElementById('offer').style = "display: none;";
+        document.getElementById('profil').style = "display: none;";
+        document.getElementById('isRecruiter').style = "display: block;";    
+        document.getElementById('logout').style = "display: block;";    
+    }
+  }
   function logout() {
+      document.getElementById('isRecruiter').style = "display: none;";
+      document.getElementById('offer').style = "display: none;";
+      document.getElementById('profil').style = "display: none;";
+      document.getElementById('logout').style = "display: none;";
       var logout = $.get("/auth/logout");
       sessionStorage.removeItem('authenticated');
       window.location.href="/#/login";
