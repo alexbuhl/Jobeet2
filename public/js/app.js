@@ -707,12 +707,12 @@ app.controller("OffersController", function($http, $scope, offers, usersSkills, 
   }
 
   percentages = []
-  for (var i = $offers.length - 1; i >= 0; i--) {
+  for (var i = 0; i <= $offers.length - 1; i++) {
     offer = $offers[i];
     myOfferSkills = [];
     for (var j = $offersSkills.length - 1; j >= 0; j--) {
       if ($offersSkills[j].idOffer == offer.id){
-        myOfferSkills.push($offersSkills[i]);
+        myOfferSkills.push($offersSkills[j]);
       }  
     }
 
@@ -728,7 +728,7 @@ app.controller("OffersController", function($http, $scope, offers, usersSkills, 
       percentages.push(100);
     }
     else{
-      percent = (gotIt / myOfferSkills.length) * 100;
+      percent = (gotIt * 100 / myOfferSkills.length);
       percentages.push(percent);
     }
   }
