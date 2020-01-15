@@ -9,10 +9,10 @@
     </tr>
   </thead>
   <tbody>
-        <tr ng-repeat="offer in offers">
+        <tr ng-repeat="(key, offer) in offers">
           <td>enterprise number</td>
           <td>{{offer.name}}</td>
-          <td><span>{{isPremium ? 'Percentage' : 'You need to be premium!'}}</span></td>
+          <td><span>{{isPremium ? percentages[key]  : 'You need to be premium!'}}</span></td>
           <td><a style="color: #FFFFFF;" href="/#/offers/{{offer.id}}"><button type="button" class="btn btn-success">See the offer</button></a></td>
         </tr>
 
@@ -20,7 +20,3 @@
 
   </tbody>
 </table>
-
-<div ng-repeat="p in percentages">
-  {{p}}
-</div>

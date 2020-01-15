@@ -10,6 +10,14 @@ class OfferSkillTableSeeder extends Seeder {
                 'idSkill'   => 4,
             ),
             array(
+                'idOffer'   => 1,
+                'idSkill'   => 5,
+            ),
+            array(
+                'idOffer'   => 1,
+                'idSkill'   => 6,
+            ),
+            array(
                 'idOffer'   => 2,
                 'idSkill'   => 1,
             ),
