@@ -781,11 +781,13 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
       }
     }
   }
+
   $scope.accepted = accepted;
   offer = null;
   for (var i = $offers.length - 1; i >= 0; i--) {
     if ($offers[i].id == $routeParams.id){
       offer = $offers[i];
+      break;
     }
   }
 
@@ -802,7 +804,7 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
 
   for (var m = $applications.length - 1; m >= 0; m--) {
     application = $applications[m];
-    if (application.idOffer == offer.id){
+    if (application.idOffer == offer.id && !application.isAccepted){
       for (var n = $users.length - 1; n >= 0; n--) {
         if ($users[n].id == application.idUser){
           applicants.push($users[n]);
@@ -812,15 +814,11 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
     }
   }
 
-  
+  console.log(applicants);
   for (var o = $users.length - 1; o >= 0; o--) {
-    for (var p = applicants.length - 1; p >= 0; p--) {
-      if ($users[o].id == applicants[p].id){
-        break;
-      }
-      if (p == 0){
-        nonApplicants.push($users[o]);
-      }
+    if ($users[o].role == 2 && applicants.indexOf($users[o]) == -1 && accepted.indexOf($users[o]) == -1) {
+      console.log($users[o]);
+      nonApplicants.push($users[o]);
     }
   }
 

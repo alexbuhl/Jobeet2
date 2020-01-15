@@ -8,7 +8,7 @@ class UsersTableSeeder extends Seeder {
 
         $users = array(
             array(
-                'username'      => 'Toto Dupont',
+                'username'      => 'Employee1',
                 'email'         => 'alexandre.buhl@epita.fr',
                 'password'      => Hash::make('admin'),
                 'role'          => 2,
@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder {
                 'onhard'    => false,
             ),
 array(
-                'username'      => 'Toto Dupont',
+                'username'      => 'Recruiter',
                 'email'         => 'admin',
                 'password'      => Hash::make('admin'),
                 'role'          => 1,

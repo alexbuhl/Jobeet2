@@ -11,7 +11,7 @@ class ChatController extends BaseController {
 	}
 
 	public function applicationAll(){
-		$application = DB::table('application')->where('isAccepted', true)->get();
+		$application = DB::table('application')->get();
     	return Response::json(json_encode($application));
 	}
 

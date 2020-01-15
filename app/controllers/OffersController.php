@@ -21,6 +21,7 @@ class OffersController extends BaseController {
 	}
 
 	public function apply(){
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput(2);
 		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => false ]);
 	}
 }
