@@ -8,6 +8,10 @@ class UserSkillTableSeeder extends Seeder {
     		array(
                 'idUser'   => 1,
                 'idSkill'          => 4,
+            ),
+            array(
+                'idUser'   => 2,
+                'idSkill'  => 2,
             )
     	);
     	DB::table('userSkills')->insert($userSkills);

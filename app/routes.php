@@ -43,6 +43,11 @@ Route::post('/enterprise/newOffer', 'EnterpriseNewOfferController@newOffer');
 Route::get('/offers', 'OffersController@getAlloffers');
 Route::get('/offer/{id}', 'OffersController@getOffer');
 Route::get('/offersSkills', 'SkillController@getOffersSkills');
+
 Route::post('/offer/acceptUser', 'OffersController@acceptUser');
 Route::post('/offer/deleteUser', 'OffersController@deleteUser');
+
+
+
+Route::post('/apply', 'OffersController@apply');
 

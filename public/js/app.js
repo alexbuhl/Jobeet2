@@ -720,6 +720,13 @@ app.factory('OfferShowService', function($http){
 });
 
 app.controller('OfferShowController', function($scope, $routeParams, $http, offers, offersSkills, skills){
+  $scope.apply = function($idOffer){
+    $.post('/apply', {
+      'idOffer' : $idOffer,
+      'idUser' : sessionStorage.getItem('id')
+    });
+  }
+
   $idOffer = $routeParams.id
 
   $offers = JSON.parse(offers);
@@ -747,8 +754,6 @@ app.controller('OfferShowController', function($scope, $routeParams, $http, offe
     }
   }
   $scope.skills = toAdd;
-
-
 });
 
 app.factory('ManageOfferService', function($http){
@@ -851,6 +856,7 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
    $scope.percentagesSuggestions = percentagesSuggestions;
    $scope.percentagesApplicants = percentagesApplicants;
    $scope.applicants = applicants;
+
    $scope.suggestions = nonApplicants;
 
    $scope.accept = function(idUser) {
@@ -882,6 +888,7 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
   
   $scope.percentages = percentages;
   $scope.suggestions = $users;*/
+
 
 
 });
