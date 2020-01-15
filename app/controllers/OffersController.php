@@ -38,4 +38,8 @@ class OffersController extends BaseController {
 	public function apply(){
 		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => false ]);
 	}
+
+	public function unsuscribe(){
+		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->delete();
+	}
 }

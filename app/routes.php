@@ -52,3 +52,5 @@ Route::post('/offer/deleteUser', 'OffersController@deleteUser');
 
 Route::post('/apply', 'OffersController@apply');
 
+Route::post('/unsuscribe', 'OffersController@unsuscribe');
+

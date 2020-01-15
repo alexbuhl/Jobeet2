@@ -96,6 +96,9 @@ app.config(function($routeProvider) {
       },
       offersSkills : function(OfferShowService){
         return OfferShowService.offersSkills();
+      },
+      applications : function(OfferShowService){
+        return OfferShowService.applications();
       }
     }
   });
@@ -719,15 +722,30 @@ app.factory('OfferShowService', function($http){
   };
 });
 
-app.controller('OfferShowController', function($scope, $routeParams, $http, offers, offersSkills, skills){
+app.controller('OfferShowController', function($scope, $routeParams, $http, offers, offersSkills, skills, applications){
+  $idOffer = $routeParams.id;
   $scope.apply = function($idOffer){
     $.post('/apply', {
       'idOffer' : $idOffer,
       'idUser' : sessionStorage.getItem('id')
     });
   }
+  $scope.unsusribe = function($idOffer){
+    $.post('/unsuscribe', {
+      'idOffer' : $idOffer,
+      'idUser' : sessionStorage.getItem('id')
+    });
+  }
 
-  $idOffer = $routeParams.id
+  $applications = JSON.parse(applications);
+  $scope.hasApplied = false;
+  for (var i = $applications.length - 1; i >= 0; i--) {
+    if ($applications[i].idOffer == $idOffer && $applications[i].idUser == sessionStorage.getItem('id')){
+      $scope.hasApplied = true;
+    }
+  }
+
+  
 
   $offers = JSON.parse(offers);
   for (var i = $offers.length - 1; i >= 0; i--) {
