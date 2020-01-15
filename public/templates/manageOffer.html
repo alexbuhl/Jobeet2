@@ -1,3 +1,24 @@
+<p style="margin-top: 30px;"><h3>Applicants</h3><p>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th scope="col">Candidate</th>
+      <th scope="col">Percentage</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(i, applicant) in applicants">
+          <td style="text-align: center;">{{ applicant.username }}</a></td>
+          <td style="text-align: center;">{{ percentagesApplicants[i] }} %</td>
+          <td style="text-align: center;">
+          <button class="acceptApplicant btn btn-success" id="{{applicant.id}}">Accept</button>
+          </td>
+      </tr>
+  </tbody>
+</table>
+
+
 <p><h3>Suggestions</h3><p>
 <table class="table">
   <thead>
@@ -10,10 +31,15 @@
   <tbody>
       <tr ng-repeat="(i, suggestion) in suggestions">
         <td style="text-align: center;">{{ suggestion.username }}</a></td>
-        <td style="text-align: center;">{{ percentages[i]}}</td>
+        <td style="text-align: center;">{{ percentagesSuggestions[i]}} %</td>
         <td style="text-align: center;">
             <button class="acceptSuggestion btn btn-success" id="{{suggestion.id}}">Accept</button>
         </td>
       </tr>
   </tbody>
 </table>
+
+<tr ng-repeat="(i, applicant) in applicants">
+  {{applicants.username}}
+  {{ percentagesApplicants[i] }}
+</tr>

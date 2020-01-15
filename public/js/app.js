@@ -118,7 +118,7 @@ app.config(function($routeProvider) {
       users : function(ChatService){
          return ChatService.users();
       },
-      applics : function(OfferShowService){
+      applications : function(OfferShowService){
         return OfferShowService.applications();
       }
 
@@ -715,7 +715,7 @@ app.factory('OfferShowService', function($http){
     },
 
     applications : function(){
-      $.get("/application/all");
+      return $.get("/application/all");
     }
   };
 });
@@ -755,20 +755,18 @@ app.controller('OfferShowController', function($scope, $routeParams, $http, offe
 app.factory('ManageOfferService', function($http){
   return {
     applications : function(){
-      $.get("/application/all");
+      return $.get("/application/all");
     }
   };
   
 });
 
-app.controller("ManageOfferController", function($routeParams, $scope, offers, userSkills, offersSkills, users, applics){
-  console.log(applics);
+app.controller("ManageOfferController", function($routeParams, $scope, offers, userSkills, offersSkills, users, applications){
   $offers = JSON.parse(offers);
   $usersSkills = JSON.parse(userSkills);
   $offersSkills = JSON.parse(offersSkills);
   $users = users; //parsed in service
-  console.log(applics);
-  $applications = JSON.parse(applics);
+  $applications = JSON.parse(applications);
 
   offer = null;
   for (var i = $offers.length - 1; i >= 0; i--) {
@@ -801,7 +799,7 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
   }
 
   
-  for (var o = $applications.length - 1; o >= 0; o--) {
+  for (var o = $users.length - 1; o >= 0; o--) {
     for (var p = applicants.length - 1; p >= 0; p--) {
       if ($users[o].id == applicants[p].id){
         break;
@@ -843,7 +841,8 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
    
    $scope.percentagesSuggestions = percentagesSuggestions;
    $scope.percentagesApplicants = percentagesApplicants;
-   $scope.suggestions = $users;
+   $scope.applicants = applicants;
+   $scope.suggestions = nonApplicants;
 
    
 /*
