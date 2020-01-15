@@ -713,7 +713,6 @@ app.factory('OfferShowService', function($http){
      });
      return tab;
     },
-
     applications : function(){
       return $.get("/application/all");
     }
@@ -990,9 +989,8 @@ app.controller('UpdateOfferController', function($scope, $routeParams, offers, s
         description : document.getElementById("description").value,
         skillSelected : selected,
         removeSkillSelected : removeSelected
-      }).done(function(res){
-          $location.path('/enterprise');
       });
+      $location.path('/enterprise');
   };
 
   $offers = JSON.parse(offers);
@@ -1062,6 +1060,10 @@ app.factory("EnterpriseService", function($http) {
 });
 
 app.controller("EnterpriseController", function($scope, enterprise, recruiterOffers, otherOffers){
+
+  $.ready(function() {
+      document.location.reload(true);
+  })
 
   $scope.recruiterOffers = JSON.parse(recruiterOffers);
   $scope.otherOffers = JSON.parse(otherOffers);
