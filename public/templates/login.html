@@ -1,14 +1,15 @@
 <link rel="stylesheet" href="../css/style.css"/>
 
-<div id="login" class="row">
-  <div class="large-6 large-offset-3">
+<div id="login" style="margin-left: 400px; margin-top: 30px; display: flex; text-align: center;">
+  <div style="text-align: center;">
     <form ng-submit="login()">
-      <fieldset class="radius">
+      <fieldset class="radius" style="text-align: center;">
         <div class="row">
-          <div class="large-6 columns">
+                <h1 style="margin-bottom: 30px;">Login</h1>
+          <div class="large-12 columns">
             <input type="text" name="email" placeholder="email" ng-model="credentials.email" required/>
           </div>
-            <div class="large-6 columns">
+            <div class="large-12 columns">
             <input type="password" name="password" placeholder="password" ng-model="credentials.password" required/>
           </div>
         </div>
@@ -16,6 +17,33 @@
         <div class="row">
           <div class="large-12 columns">
             <button type="submit" class="button large expand radius">Log In</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div style="text-align: center;">
+    <form ng-submit="login()">
+      <fieldset class="radius" style="text-align: center;">
+        <div class="row">
+                <h1 style="margin-bottom: 30px;">Sign in</h1>
+          <div class="large-12 columns">
+            <input type="text" name="email" placeholder="email" ng-model="" required/>
+          </div>
+          <div class="large-12 columns">
+            <input type="password" name="password" placeholder="password" ng-model="" required/>
+          </div>
+          <div class="large-12 columns">
+            <input type="password" name="password" placeholder="username" ng-model="" required/>
+          </div>
+          <label style="text-align: left;">Recruiter profil :</label>
+          <input class="form-check-input" type="checkbox" id="isPremium">
+
+        </div>
+
+        <div class="row">
+          <div class="large-12 columns">
+            <button type="submit" class="button large expand radius">Sign In</button>
           </div>
         </div>
       </fieldset>

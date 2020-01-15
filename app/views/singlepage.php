@@ -37,7 +37,8 @@
             <ul class="nav navbar-nav navbar-right">
                   <li id="isRecruiter" style="display: none;"><a href='/#/enterprise' style="color: white;">Enterprise</a></li>
                   <li id="offer" style="display: none;"><a href="/#/offers" style="color: white;">Offers</a></li>                
-                  <li id="profil" style="display: none;"><a href="/#/profil" style="color: white;">Profil</a></li>                
+                  <li id="profil" style="display: none;"><a href="/#/profil" style="color: white;">Profil</a></li>
+                  <li id="chat" style="display: none;"><a href="/#/chat" style="color: white;">Chat</a></li>                
                   <li id="logout" style="display: none;"><a onclick="logout()" style="color: white;">Logout</a></li>                
             </ul>
           </div>
@@ -63,10 +64,12 @@
         document.getElementById('isRecruiter').style = "display: none;";
         document.getElementById('offer').style = "display: block;";
         document.getElementById('profil').style = "display: block;";
+        document.getElementById('chat').style = "display: block;";
         document.getElementById('logout').style = "display: block;";    
       } else {
         document.getElementById('offer').style = "display: none;";
         document.getElementById('profil').style = "display: none;";
+        document.getElementById('chat').style = "display: none;";        
         document.getElementById('isRecruiter').style = "display: block;";    
         document.getElementById('logout').style = "display: block;";    
     }
@@ -75,6 +78,7 @@
       document.getElementById('isRecruiter').style = "display: none;";
       document.getElementById('offer').style = "display: none;";
       document.getElementById('profil').style = "display: none;";
+      document.getElementById('chat').style = "display: none;"; 
       document.getElementById('logout').style = "display: none;";
       var logout = $.get("/auth/logout");
       sessionStorage.removeItem('authenticated');
