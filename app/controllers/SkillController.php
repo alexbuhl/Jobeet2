@@ -30,6 +30,11 @@ class SkillController extends \BaseController {
 		return Response::json(json_encode($res));
 	}
 
+	public function getOffersSkills(){
+		$offerSkills = DB::table('offerSkill')->get();
+		return Response::json(json_encode($offerSkills));
+	}
+
 
 	/**
 	 * Store a newly created resource in storage.

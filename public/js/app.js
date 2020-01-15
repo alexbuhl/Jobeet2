@@ -66,6 +66,12 @@ app.config(function($routeProvider) {
     resolve : {
       offers : function(OfferShowService){
         return OfferShowService.offers();
+      },
+      skills : function(OfferShowService){
+        return OfferShowService.skills();
+      },
+      offersSkills : function(OfferShowService){
+        return OfferShowService.offersSkills();
       }
     }
   });
@@ -430,18 +436,53 @@ app.factory('OfferShowService', function($http){
   return {
     offers : function() {
       return $.get('/offers/');
-    }
+    },
+    offersSkills : function(){
+      return $.get('offersSkills');
+    },
+    skills: function() {
+      tab = [];
+      $.get("/skills").done(function(res){
+        skills = JSON.parse(res);
+        for(elt in skills){
+          tab.push(skills[elt]);
+       }
+     });
+     return tab;
+    },
   };
 });
 
-app.controller('OfferShowController', function($scope, $routeParams, $http, offers){
+app.controller('OfferShowController', function($scope, $routeParams, $http, offers, offersSkills, skills){
+  $idOffer = $routeParams.id
+
   $offers = JSON.parse(offers);
   for (var i = $offers.length - 1; i >= 0; i--) {
-    if ($offers[i].id == $routeParams.id){
+    if ($offers[i].id == $idOffer){
       $scope.offer = $offers[i];
     }
   }
+
+  $offersSkills = JSON.parse(offersSkills);
+  var arraySkills = [];
+  for (var i = $offersSkills.length - 1; i >= 0; i--) {
+    if ($offersSkills[i].idOffer == $idOffer){
+      arraySkills.push($offersSkills[i])
+    }
+  }
   
+
+  var toAdd = [];
+  for (var i = skills.length - 1; i >= 0; i--) {
+    for (var j = arraySkills.length - 1; j >= 0; j--) {
+      if (skills[i].id == arraySkills[j].idSkill){
+        toAdd.push(skills[i]);
+      }
+    }
+  }
+  $scope.skills = toAdd;
+
+
 });
 
 
