@@ -72,6 +72,12 @@ app.config(function($routeProvider) {
     resolve: {
       offers : function(OffersService){
         return OffersService.offers();
+      },
+      usersSkills : function(OffersService){
+        return OffersService.usersSkills();
+      },
+      offersSkills : function(OffersService){
+        return OffersService.offersSkills();
       }
     }
   });
@@ -674,13 +680,61 @@ app.factory("OffersService", function($http){
   return {
     offers : function() {
       return $.get('/offers');
+    },
+    usersSkills :function(){
+      return $.get('/userSkills');
+    },
+    offersSkills : function(){
+      return $.get('/offersSkills');
     }
   };
 });
 
 
-app.controller("OffersController", function($http, $scope, offers){
-  $scope.offers = JSON.parse(offers);
+app.controller("OffersController", function($http, $scope, offers, usersSkills, offersSkills){
+  $offers = JSON.parse(offers);
+  $scope.offers = $offers;
+  $scope.isPremium = sessionStorage.getItem('isPremium');
+
+  $offersSkills = JSON.parse(offersSkills);
+
+  $usersSkills = JSON.parse(usersSkills);
+  $myUserSkills = []
+  for (var i = $usersSkills.length - 1; i >= 0; i--) {
+    if ($usersSkills[i].idUser == sessionStorage.getItem('id')){
+      $myUserSkills.push($usersSkills[i]);
+    }
+  }
+
+  percentages = []
+  for (var i = $offers.length - 1; i >= 0; i--) {
+    offer = $offers[i];
+    myOfferSkills = [];
+    for (var j = $offersSkills.length - 1; j >= 0; j--) {
+      if ($offersSkills[j].idOffer == offer.id){
+        myOfferSkills.push($offersSkills[i]);
+      }  
+    }
+
+    gotIt = 0
+    for (var k = myOfferSkills.length - 1; k >= 0; k--) {
+      for (var l = $myUserSkills.length - 1; l >= 0; l--) {
+        if ($myUserSkills[l].idSkill == myOfferSkills[k].idSkill){
+          gotIt = gotIt + 1;
+        }
+      }  
+    }
+    if (myOfferSkills.length == 0){
+      percentages.push(100);
+    }
+    else{
+      percent = (gotIt / myOfferSkills.length) * 100;
+      percentages.push(percent);
+    }
+  }
+  $scope.percentages = percentages;
+
+
 });
 
 
