@@ -1,10 +1,32 @@
+<h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>Manage Offers</u></b></h1>
+
+
+<p style="margin-top: 30px;"><h3>Applicants Accepted</h3><p>
+<table class="table">
+  <thead>
+    <tr bgcolor="#D3D3D3" style="text-align: center;">
+      <th style="text-align: center;" scope="col">Candidate</th>
+      <th style="text-align: center;" scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="(i, applicant) in accepted">
+          <td style="text-align: center;">{{ applicant.username }}</a></td>
+          <td style="text-align: center;">
+          <button class="acceptApplicant btn btn-danger" ng-click="delete(applicant.id)">Delete</button>
+          </td>
+      </tr>
+  </tbody>
+</table>
+
+
 <p style="margin-top: 30px;"><h3>Applicants</h3><p>
 <table class="table">
   <thead>
     <tr bgcolor="#D3D3D3" style="text-align: center;">
-      <th scope="col">Candidate</th>
-      <th scope="col">Percentage</th>
-      <th scope="col">Actions</th>
+      <th style="text-align: center;" scope="col">Candidate</th>
+      <th style="text-align: center;" scope="col">Percentage</th>
+      <th style="text-align: center;" scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -12,7 +34,8 @@
           <td style="text-align: center;">{{ applicant.username }}</a></td>
           <td style="text-align: center;">{{ percentagesApplicants[i] }} %</td>
           <td style="text-align: center;">
-          <button class="acceptApplicant btn btn-success" id="{{applicant.id}}">Accept</button>
+          <button class="acceptApplicant btn btn-success" ng-click="accept(applicant.id)">Accept</button>
+          <button class="acceptApplicant btn btn-danger" ng-click="delete(applicant.id)">Delete</button>
           </td>
       </tr>
   </tbody>
@@ -23,9 +46,9 @@
 <table class="table">
   <thead>
     <tr bgcolor="#D3D3D3" style="text-align: center;">
-      <th scope="col">Candidate</th>
-      <th scope="col">Percentage</th>
-      <th scope="col">Actions</th>
+      <th style="text-align: center;" scope="col">Candidate</th>
+      <th style="text-align: center;" scope="col">Percentage</th>
+      <th style="text-align: center;" scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -34,6 +57,7 @@
         <td style="text-align: center;">{{ percentagesSuggestions[i]}} %</td>
         <td style="text-align: center;">
             <button class="acceptSuggestion btn btn-success" id="{{suggestion.id}}">Accept</button>
+            <button class="acceptApplicant btn btn-danger" ng-click="delete(suggestion.id)">Delete</button>
         </td>
       </tr>
   </tbody>

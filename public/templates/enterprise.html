@@ -11,8 +11,8 @@
 <table class="table">
   <thead>
     <tr bgcolor="#D3D3D3" style="text-align: center;">
-      <th scope="col">Offer</th>
-      <th scope="col">Actions</th>
+      <th scope="col" style="text-align: center;">Offer</th>
+      <th scope="col" style="text-align: center;">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +20,10 @@
         <td style="text-align: center;">{{ offer.name }}</td>
         <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Update the offer</a></button>
         <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
-        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a></td>
+        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a>
+        <a style="color: #FFFFFF;" href="/#/chat"><button type="button" class="btn btn-primary" ng-click="chat(offer.id)">Chat</button></a>
+      </td>
+
   </tbody>
 </table>
 
@@ -29,8 +32,8 @@
 <table class="table">
   <thead>
     <tr bgcolor="#D3D3D3" style="text-align: center;">
-      <th scope="col">Offer</th>
-      <th scope="col">Actions</th>
+      <th scope="col"style="text-align: center;" >Offer</th>
+      <th scope="col"style="text-align: center;" >Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -38,7 +41,9 @@
         <td style="text-align: center;">{{ offer.name }}</td>
         <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Update the offer</a></button>
         <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
-        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a></td>
+        <a style="color: #FFFFFF;" href="/#/enterprise/manageOffer/{{offer.id}}"><button type="button" class="btn btn-primary">Manage the offer</button></a>
+        <a style="color: #FFFFFF;" href="/#/chat"><button type="button" class="btn btn-primary" ng-click="chat(offer.id)">Chat</button></a>
+      </td>
 
   </tbody>
 </table>

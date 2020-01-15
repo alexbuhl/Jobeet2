@@ -766,7 +766,17 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
   $offersSkills = JSON.parse(offersSkills);
   $users = users; //parsed in service
   $applications = JSON.parse(applications);
-
+  accepted = [];
+  for (elt in $applications){
+    if($applications[elt].idOffer == $routeParams.id && $applications[elt].isAccepted){
+      for(val in users){
+        if(users[val].id == $applications[elt].idUser){
+          accepted.push(users[val]);
+        }
+      }
+    }
+  }
+  $scope.accepted = accepted;
   offer = null;
   for (var i = $offers.length - 1; i >= 0; i--) {
     if ($offers[i].id == $routeParams.id){
@@ -843,7 +853,17 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
    $scope.applicants = applicants;
    $scope.suggestions = nonApplicants;
 
+   $scope.accept = function(idUser) {
+     $.post('/offer/acceptUser', {idOffer: $routeParams.id, idUser: idUser}).done(function(res){
+        document.location.reload(true);
+     });
+   };
    
+   $scope.delete = function(idUser) {
+     $.post('/offer/deleteUser', {idOffer: $routeParams.id, idUser: idUser}).done(function(res){
+        document.location.reload(true);
+     });
+   };
 /*
   percentages = [];
   for (var k = $users.length - 1; k >= 0; k--) {
@@ -1077,6 +1097,10 @@ app.controller("EnterpriseController", function($scope, enterprise, recruiterOff
     $.post('enterprise/deleteOffer', {id: id}).done(function(res){
       document.location.reload(true);
     });
-  }
+  };
+
+  $scope.chat = function(id){
+    sessionStorage.setItem('connectedOffer', id);
+  };
 
 });

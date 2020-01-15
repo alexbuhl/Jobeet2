@@ -10,4 +10,12 @@ class OffersController extends BaseController {
 		$offer = DB::table('offer')->where('id', $id)->first();
 		return Response::json(json_encode($offer));
 	}
+
+	public function acceptUser(){
+		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->update(['isAccepted' => true]);
+	}
+
+	public function deleteUser(){
+		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->delete();
+	}
 }
