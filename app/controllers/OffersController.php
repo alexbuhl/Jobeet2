@@ -18,6 +18,7 @@ class OffersController extends BaseController {
 
 	public function deleteUser(){
 		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->delete();
+	}
 
 	public function apply(){
 		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => false ]);

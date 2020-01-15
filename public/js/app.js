@@ -870,27 +870,6 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
         document.location.reload(true);
      });
    };
-/*
-  percentages = [];
-  for (var k = $users.length - 1; k >= 0; k--) {
-    myUser = $users[k];
-
-
-    myUserSkills = []
-    for (var l = $usersSkills.length - 1; l >= 0; l--) {
-      if ($usersSkills[l].idUser == myUser.id){
-        myUserSkills.push($usersSkills[l])
-      }
-    }
-
-    percentages.push(calculPercentage(myOfferSkills, myUserSkills));
-  }
-  
-  $scope.percentages = percentages;
-  $scope.suggestions = $users;*/
-
-
-
 });
 
 function calculPercentage(myOfferSkills, myUserSkills){
