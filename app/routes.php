@@ -41,6 +41,7 @@ Route::get('/enterprise/otherOffers', 'EnterpriseController@otherOffers');
 
 
 Route::post('/enterprise/updateOffer', 'EnterpriseController@updateOffer');
+Route::post('/enterprise/deleteOffer', 'EnterpriseController@deleteOffer');
 
 Route::post('/enterprise/newOffer', 'EnterpriseNewOfferController@newOffer');
 

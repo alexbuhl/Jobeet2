@@ -80,6 +80,7 @@ app.config(function($routeProvider) {
     }
   });
 
+
   $routeProvider.when('/enterprise', {
     templateUrl: 'templates/enterprise.html',
     controller: 'EnterpriseController',
@@ -453,7 +454,7 @@ app.factory("OffersService", function($http){
 });
 
 
-app.controller("OffersController", function($http, $scope, $location, offers){
+app.controller("OffersController", function($http, $scope, offers){
   $scope.offers = JSON.parse(offers);
 });
 
@@ -482,6 +483,8 @@ app.controller("EnterpriseNewOfferController", function($scope){
         description : document.getElementById("description").value,
         idEnterprise : sessionStorage.getItem('identerprise'),
         email : sessionStorage.getItem('email')
+      }).done(function(res){
+        document.location.reload(true);
       });
     };
 });
@@ -508,4 +511,12 @@ app.controller("EnterpriseController", function($scope, enterprise, recruiterOff
   $enterprise = JSON.parse(enterprise);
   $scope.enterpriseName = $enterprise.name;
   $scope.enterpriseDescription = $enterprise.description;
+
+  $scope.deleteOffer = function(id){
+    console.log(id);
+    $.post('enterprise/deleteOffer', {id: id}).done(function(res){
+      document.location.reload(true);
+    });
+  }
+
 });
