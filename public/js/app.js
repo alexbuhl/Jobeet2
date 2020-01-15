@@ -810,6 +810,7 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
   }
 
   myOfferSkills = [];
+  console.log($offersSkills);
   for (var j = $offersSkills.length - 1; j >= 0; j--) {
     if ($offersSkills[j].idOffer == offer.id){
       myOfferSkills.push($offersSkills[j]);
@@ -832,7 +833,6 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
     }
   }
 
-  console.log(applicants);
   for (var o = $users.length - 1; o >= 0; o--) {
     if ($users[o].role == 2 && applicants.indexOf($users[o]) == -1 && accepted.indexOf($users[o]) == -1) {
       console.log($users[o]);
@@ -865,6 +865,8 @@ app.controller("ManageOfferController", function($routeParams, $scope, offers, u
         myUserSkills.push($usersSkills[l])
       }
     }
+    console.log(myOfferSkills);
+    console.log(myUserSkills);
     percentagesApplicants.push(calculPercentage(myOfferSkills, myUserSkills));
   }
 

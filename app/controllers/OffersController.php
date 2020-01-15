@@ -17,6 +17,7 @@ class OffersController extends BaseController {
 		    $message->to(DB::table('users')->where('id', Input::get('idUser'))->first()->email, '')->subject(DB::table('offer')->where('id', Input::get('idOffer'))->first()->name);
 		});
 		DB::table('application')->where(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer')])->update(['isAccepted' => true]);
+		DB::table('chat')->insert(['idOffer' => Input::get('idOffer'), 'idApplicant' => Input::get('idUser'), 'isFromOffer' => true, 'message' => 'Hello !']);
 	}
 
 	public function acceptNewUser(){
@@ -25,6 +26,7 @@ class OffersController extends BaseController {
 		    $message->to(DB::table('users')->where('id', Input::get('idUser'))->first()->email, '')->subject(DB::table('offer')->where('id', Input::get('idOffer'))->first()->name);
 		});
 		DB::table('application')->insert(['idUser' => Input::get('idUser'), 'idOffer' => Input::get('idOffer'), 'isAccepted' => true]);
+		DB::table('chat')->insert(['idOffer' => Input::get('idOffer'), 'idApplicant' => Input::get('idUser'), 'isFromOffer' => true, 'message' => 'Hello !']);
 	}
 
 	public function deleteUser(){
