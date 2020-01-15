@@ -5,6 +5,8 @@
 </div>
 
 
+
+
 <p><h3>My offers</h3><p>
 <table class="table">
   <thead>
@@ -14,12 +16,10 @@
     </tr>
   </thead>
   <tbody>
-    <div class ="list" ng-repeat="offer in recruiterOffers">
-        {{ offer.name }}
-        <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
-        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
-      
-    </div>
+    <tr style="text-align: center;" ng-repeat="offer in recruiterOffers">
+        <td style="text-align: center;">{{ offer.name }}</td>
+        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
+        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button></td>
   </tbody>
 </table>
 
@@ -33,10 +33,10 @@
     </tr>
   </thead>
   <tbody>
-    <div class ="list" ng-repeat="offer in otherOffers">
-      {{ offer.name }}
-      <button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
-      <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button>
+    <tr style="text-align: center;" ng-repeat="offer in otherOffers">
+        <td style="text-align: center;">{{ offer.name }}</td>
+        <td style="text-align: center;"><button type="button" class="btn btn-success"><a style="color: #FFFFFF;" href="/#/enterprise/updateOffer/{{offer.id}}">Manage the offer</a></button>
+        <button type="button" class="btn btn-danger"><a style="color: #FFFFFF;" ng-click="deleteOffer(offer.id)">Delete the offer</a></button></td>
   </tbody>
 </table>
 <div class="striped-border"></div>
