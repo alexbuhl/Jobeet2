@@ -1,0 +1,38 @@
+<html>
+    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="stylesheet" href="../css/chat.css"/>
+    <body>
+        <h1 style="text-align: center; padding-top: 30px; padding-bottom: 30px;"><b><u>Chat</u></b></h1>
+        <div style="display: flex;">
+            <div class="col-sm-5">
+                <table class="table">
+                  <thead>
+                    <tr bgcolor="#D3D3D3" style="text-align: center;">
+                      <th style="text-align: center;" scope="col">Offer name</th>
+                      <th style="text-align: center;" scope="col">Conversation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="text-align: center;" ng-repeat="item in availablechats">
+                        <td>{{item.name}}</td>
+                        <td><button type="button" class="btn btn-success" ng-click="show({{item.id}})">Chat here</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>       
+            <div class="col-sm-6 frame">
+                <ul id="myul"></ul>
+                <div>
+                    <div class="msj-rta macro">                        
+                        <div class="text text-r" style="background:whitesmoke !important">
+                            <input class="mytext" placeholder="Type a message"/>
+                        </div> 
+                    </div>
+                    <div style="padding:10px;">
+                        <span class="glyphicon glyphicon-share-alt"></span>
+                    </div>                
+                </div>
+            </div>       
+        </div>
+    </body>
+</html>

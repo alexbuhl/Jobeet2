@@ -50,6 +50,22 @@ app.config(function($routeProvider) {
     }
   });
 
+  $routeProvider.when('/chat', {
+    templateUrl: 'templates/chat.html',
+    controller: 'ChatController',
+    resolve: {
+      chats : function(ChatService){
+        return ChatService.getAll();
+      },
+      offers : function(OfferShowService){
+        return OfferShowService.offers();
+      },
+      users : function(ChatService){
+        return ChatService.users();
+      }
+    }
+  });
+
   $routeProvider.when('/offers', {
     templateUrl: 'templates/offers.html',
     controller: 'OffersController',
@@ -228,10 +244,7 @@ app.controller("LoginController", function($scope, $location, AuthenticationServ
         sessionStorage.setItem('off', $user.off);
         sessionStorage.setItem('onsoft', $user.onsoft);
         sessionStorage.setItem('onhard', $user.onhard);
-
       });
-
-
       $location.path('/home');
     });
   };
@@ -247,6 +260,168 @@ app.controller("HomeController", function($scope, $location, AuthenticationServi
   };
 });
 
+app.factory("ChatService", function($http) {
+  return {
+    getAll: function() {
+      tb = [];
+      $.get("/chat/all").done(function(res){
+        tmp = JSON.parse(res);
+        for(elt in tmp){
+          tb.push(tmp[elt]);
+       }
+     });
+     return tb;
+    },
+    users: function() {
+      tab = [];
+      $.get("/users/all").done(function(res){
+        tmp = JSON.parse(res);
+        for(elt in tmp){
+          tab.push(tmp[elt]);
+       }
+     });
+     return tab;
+    }
+  };
+});
+
+app.controller("ChatController", function($scope, chats, offers, users) {
+  mychats = [];
+  for(elt in chats){
+    if(sessionStorage.getItem('role') == 2){
+      if(chats[elt].idApplicant == sessionStorage.getItem('id')){
+        mychats.push(chats[elt]);
+      }
+    } else {
+      if(chats[elt].idOffer == sessionStorage.getItem('connectedOffer')){
+        mychats.push(chats[elt]);
+      }
+    }
+  }
+  offers = JSON.parse(offers);
+  availablechats = [];
+  var me = {};
+  var you = {};
+  if(sessionStorage.getItem('role') == 2){
+    for(elt in mychats){
+      for(val in offers){
+        if(mychats[elt].idOffer == offers[val].id){
+          if(availablechats.indexOf(offers[val]) == -1){
+            availablechats.push(offers[val]);
+            break;
+          }
+        }
+      }
+    }
+    me.avatar = "https://photos.cri.epita.fr/assistant.test";  
+    you.avatar = sessionStorage.getItem('image');
+  } else {
+    tmp = []
+    for(elt in mychats){
+      if(tmp.indexOf(mychats[elt].idApplicant) == -1){
+        tmp.push(mychats[elt].idApplicant);
+      }
+    }
+    for(elt in tmp){
+      for(val in users){
+        if(tmp[elt] == users[val].id){
+          availablechats.push({id: users[val].id, name: users[val].username})
+        }
+      }
+    }
+    you.avatar = "https://photos.cri.epita.fr/assistant.test";  
+  }
+  $scope.availablechats = availablechats;
+  function insertChat(who, text){
+      var control = "";
+      var w1 = "100";
+      var w2 = "100";
+      if(sessionStorage.getItem('role') == 1){
+        w2 = "60";
+      } else {
+        w1 = "60";
+      }
+      if (who == "me"){
+          control = '<li style="width:100%;">' +
+                          '<div class="msj macro">' +
+                          '<div class="avatar"><img class="img-circle" style="width:' + w1 + '%;" src="'+ me.avatar +'" /></div>' +
+                              '<div class="text text-l">' +
+                                  '<p>'+ text +'</p>' +
+                                  '<p><small></small></p>' +
+                              '</div>' +
+                          '</div>' +
+                      '</li>';                    
+      }else{
+          control = '<li style="width:100%;">' +
+                          '<div class="msj-rta macro">' +
+                              '<div class="text text-r">' +
+                                  '<p>'+text+'</p>' +
+                                  '<p><small></small></p>' +
+                              '</div>' +
+                          '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:' + w2 + '%;" src="'+you.avatar+'" /></div>' +                                
+                    '</li>';
+      }
+      $("#myul").append(control).scrollTop($("#myul").prop('scrollHeight'));
+  }
+
+  function resetChat(){
+      $("#myul").empty();
+  }
+
+  $(".mytext").on("keydown", function(e){
+      if (e.which == 13){
+          var text = $(this).val();
+          if (text !== ""){
+              insertChat("you", text);              
+              $(this).val('');
+              if(sessionStorage.getItem('role') == 2){
+                $.post('/chat/add', {idOffer: sessionStorage.getItem('chatOffer'), idApplicant: sessionStorage.getItem('id'), isFromOffer: false, message: text});
+              } else {
+                $.post('/chat/add', {idOffer: sessionStorage.getItem('connectedOffer'), idApplicant: sessionStorage.getItem('chatApplicant'), isFromOffer: true, message: text});
+              }
+          }
+      }
+  });
+
+  $('body > div > div > div:nth-child(2) > span').click(function(){
+      $(".mytext").trigger({type: 'keydown', which: 13, keyCode: 13});
+  })
+
+  $scope.show = function(id) {
+    resetChat();
+    if(sessionStorage.getItem('role') == 2){
+      sessionStorage.setItem('chatOffer', id);
+      for(elt in mychats){
+        if(mychats[elt].idOffer == parseInt(id, 10)) {
+          if(mychats[elt].isFromOffer){
+            insertChat("me", mychats[elt].message);  
+          } else {
+            insertChat("you", mychats[elt].message);  
+          }
+        }
+      }
+    } else {
+      sessionStorage.setItem('chatApplicant', id);
+      for(elt in users){
+        if(users[elt].id == id){
+          me.avatar = users[elt].image;
+        }
+      }
+      for(elt in mychats){
+        if(mychats[elt].idApplicant == parseInt(id, 10)) {
+          console.log(mychats[elt]);
+          if(mychats[elt].isFromOffer){
+            insertChat("you", mychats[elt].message);  
+          } else {
+            insertChat("me", mychats[elt].message);  
+          }
+        }
+      }
+    }
+  };
+
+  resetChat();
+});
 
 app.factory("ProfilService", function($http) {
   return {

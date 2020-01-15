@@ -32,6 +32,10 @@ Route::get('/user/connected','AuthController@getConnected');
 Route::post('/profil/edit', 'ProfilController@edit');
 Route::get('/skills','SkillController@getSkills');
 Route::get('/userSkills','SkillController@getAllUserSkills');
+Route::get('/chat/all', 'ChatController@getAll');
+Route::post('/chat/add', 'ChatController@add');
+Route::get('/application/all', 'ChatController@applicationAll');
+Route::get('/users/all', 'ChatController@usersAll');
 
 
 
